@@ -10,7 +10,7 @@ c Open the data file
       open (unit=20, file='points.dat')
 c Read the number of points
       read(20,*) n
-      if (n.GT.nmax) then
+      IF (n.GT.nmax) then
         write(*,*) 'Error: n = ', n, 'is larger than nmax =', nmax
         goto 9999
       endif
