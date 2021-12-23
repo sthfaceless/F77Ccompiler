@@ -1,0 +1,15 @@
+c Begin commentary
+    program test
+    integer a, b, c
+    a = 23
+    b = b'1011'
+    c = - a + b ** b
+c Mid commentary
+    print *, a, b
+    if (c.eq.a) then
+        c = 21
+    else if (a.le.b) then
+        c = 22
+    endif
+    end
+c End commentary

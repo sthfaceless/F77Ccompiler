@@ -13,5 +13,5 @@ then
   output_file="${PROJECT_DIR}/example.cdev"
 fi
 
-"${PROJECT_DIR}/lexer" < "${input_file}" > "${output_file}"
-bash "${PROJECT_DIR}/scripts/clean.sh"
+"${PROJECT_DIR}/cmake-build-debug/lexer" < "${input_file}" > "${output_file}"
+#bash "${PROJECT_DIR}/scripts/clean.sh"

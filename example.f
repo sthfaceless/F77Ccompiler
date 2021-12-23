@@ -1,26 +1,49 @@
-      Program inpdat
+      character*16 function icount(ifirst, isecond)
+      character*32 ifirst, isecond
+      ifirst = ifirst + isecond
+      icount = ifirst ** isecond
+      end
+
+      subroutine getLevel(level)
+      do item = 1, level, level*2
+        if (item.LE.level) then
+            write (*, *) item, item*2, item + " asd"
+        else
+              if (level.GE.level) then
+                    getLevel = 25 + "111"
+              elseif (level.GE.level) then
+                    getLevel = pow("123", 31)
+              else
+                    do j = 1, level, 22
+                        print *, 23
+                    enddo
+              endif
+            print *, "end"
+        endif
+      enddo
+      end
+
 c
 c This program reads n points from a data file and stores them in
 c 3 arrays x, y, z.
 c
+      Program name
       integer nmax
-      parameter (nmax=1000)
-      real x(nmax), y(nmax), z(nmax)
+      real x, y, z
+      nmax = 1000
 c Open the data file
-      open (unit=20, file='points.dat')
+      open (20, file='points.dat')
 c Read the number of points
       read(20,*) n
       IF (n.GT.nmax) then
         write(*,*) 'Error: n = ', n, 'is larger than nmax =', nmax
-        goto 9999
       endif
-c Loop over the data points
-      do i= 1, n
-        read(20,100) x(i), y(i), z(i)
+      do i= 1, n, (5*n + 48)
+        read(20,*) x, y, z
       enddo
-100   format (3(F10.4))
 c Close the file
       close (20)
 c Now we can process the data somehow...
-9999  stop
       end
+
+c Info r
