@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/lexer.dir/src/classes.cpp.o CMakeFiles/lexer.dir/src/f77lexer.c.o CMakeFiles/lexer.dir/src/f77parser.c.o CMakeFiles/lexer.dir/src/utils.cpp.o -o lexer 

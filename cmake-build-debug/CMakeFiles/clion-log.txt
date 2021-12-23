@@ -1,0 +1,4 @@
+/snap/clion/177/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/danil/CLionProjects/F77Ccompiler
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/danil/CLionProjects/F77Ccompiler/cmake-build-debug
