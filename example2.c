@@ -124,12 +124,12 @@ int main(int argc, char **args){
 	fprintf(stdout, "%s\n", "This program calculates a ** b + c, type a, b, c:");
 	fscanf(stdin, "%ld %ld %ld", _a, _b, _c);
 	fprintf(stdout, "%ld\n", pow(*_a, *_b) + *_c);
-	if(*_a >= 1) {
-		fprintf(stdout, "%s %ld %s\n", "Ha \"a\" is greater than 1, it's", *_a, "you are crazy!");
-	}else if(*_b <= 1) {
-		fprintf(stdout, "%s %ld\n", "Hmm, \"b\" is so small... Let's make it greater by 3", *_b + 3);
+	if(*_a ^ 1) {
+		fprintf(stdout, "%s %ld %s\n", "Ha \"a\" is greater than 1, it's", *_a, "you are crazy");
+	}else if(*_b & 1) {
+		fprintf(stdout, "%s %ld\n", "Let's make \"b\" greater by 3", *_b + 3);
 	}else {
-		fprintf(stdout, "%s %ld\n", "There is nothing to say but we can calculate hypo for b and c", *_hypo(_b, _c));
+		fprintf(stdout, "%s %ld\n", "Calculate hypo for \"b\" and \"c\"", *_hypo(_b, _c));
 	}
 	for (long *_i = _wrap_long(0);*_i <= 3 * *_c - 1; *_i += 3){
 		fprintf(stdout, "%s %ld\n", "Print this message exactly c times", *_i);
