@@ -112,7 +112,7 @@ FILE *_io_units[100];
 // Begin commentary
 long double* _hypo (long *_x, long *_y) {
 	long double *_hypo = malloc(sizeof(long double));
-	*_hypo = pow(*_x * *_x + *_y * *_y, 1 / 2);
+	*_hypo = powl(*_x * *_x + *_y * *_y, 1.0 / 2.0);
 	return _hypo;
 }
 
@@ -124,9 +124,9 @@ int main(int argc, char **args){
 	fprintf(stdout, "%s\n", "This program calculates a ** b + c, type a, b, c:");
 	fscanf(stdin, "%ld %ld %ld", _a, _b, _c);
 	fprintf(stdout, "%ld\n", pow(*_a, *_b) + *_c);
-	if(*_a ^ 1) {
-		fprintf(stdout, "%s %ld %s\n", "Ha \"a\" is greater than 1, it's", *_a, "you are crazy");
-	}else if(*_b & 1) {
+	if(*_a >= 1) {
+		fprintf(stdout, "%s %ld %s\n", "\"a\" greater than 1, it's", *_a, "you are crazy");
+	}else if(*_b <= 1) {
 		fprintf(stdout, "%s %ld\n", "Let's make \"b\" greater by 3", *_b + 3);
 	}else {
 		fprintf(stdout, "%s %ld\n", "Calculate hypo for \"b\" and \"c\"", *_hypo(_b, _c));

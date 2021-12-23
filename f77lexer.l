@@ -4,7 +4,7 @@
 using namespace std;
 %}
 
-ss (" "{4}|\t)
+ss (" "{6}|\t)
 exp ((e|d)(\+|\-)?[0-9]{1,3})
 
 %option caseless yylineno noyywrap stack

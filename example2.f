@@ -2,7 +2,7 @@ c Begin commentary
 
         real function hypo(x, y)
         integer x, y
-        hypo = (x * x + y * y) ** (1/2)
+        hypo = (x * x + y * y) ** (1.0/2.0)
         end
 
         program abc
