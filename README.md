@@ -9,6 +9,7 @@
 - `f77lexer.l`, `f77parser.y`, all contens of src/*
 #### Runtime requirements
 - `f77.h` file at working directory
+- don't forget to link math library during compilation `-lm`
 #### Usage
 - `bash scripts/build.sh` or 3 following commands
   - `bison -o "${PROJECT_DIR}/src/f77parser.c" "${PROJECT_DIR}/f77parser.y" -d `
@@ -24,6 +25,17 @@
 - comparison operators `.eq.`, `.ne.`, `.lt.`, `.le.`, `.gt.`, `.ge.`
 - binary operators '.eqv.', '.neqv.', '.or.', '.not.', '.and.', `.xor.`
 - simple if statement `if (expression) then ... else if (expression) then ... endif`
-- simple do statement `do var=l, r, step ... enddo` and `do while(expression) ... enddo`
-- function definition `type function ([varlist]) ... end`
-- 
+- simple do statement
+  - `do var=l, r, step ... enddo` 
+  - `do while(expression) ... enddo`
+- function definition 
+  - `type function ([varlist]) ... end`
+  - `subroutine ([varlist]) ... end`
+- `stop`
+- `pause n`
+- `open(n, file=filename)`
+- `close(n)`
+- `print *, [iolist]`
+- `write (unit, *) [iolist]`
+- `read (unit, *) [iolist]`
+- `+` for string + something expression like concat
