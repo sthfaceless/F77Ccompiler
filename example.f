@@ -1,5 +1,5 @@
-      character*16 function icount(ifirst, isecond)
-      character*32 ifirst, isecond
+      real function icount(ifirst, isecond)
+      real ifirst, isecond
       ifirst = ifirst + isecond
       icount = ifirst ** isecond
       end
@@ -12,7 +12,7 @@
               if (level.GE.level) then
                     getLevel = 25 + "111"
               elseif (level.GE.level) then
-                    getLevel = pow("123", 31)
+                    getLevel = 26 ** 31
               else
                     do j = 1, level, 22
                         print *, 23
@@ -28,7 +28,7 @@ c This program reads n points from a data file and stores them in
 c 3 arrays x, y, z.
 c
       Program name
-      integer nmax
+      integer nmax, n
       real x, y, z
       nmax = 1000
 c Open the data file
