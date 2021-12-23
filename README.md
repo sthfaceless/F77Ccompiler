@@ -23,7 +23,7 @@
 - constants of types described above
 - arithmetical operators  `+`, `-`, `*`, `/`, `**`, `()`
 - comparison operators `.eq.`, `.ne.`, `.lt.`, `.le.`, `.gt.`, `.ge.`
-- binary operators '.eqv.', '.neqv.', '.or.', '.not.', '.and.', `.xor.`
+- binary operators `.eqv.`, `.neqv.`, `.or.`, `.not.`, `.and.`, `.xor.`
 - simple if statement `if (expression) then ... else if (expression) then ... endif`
 - simple do statement
   - `do var=l, r, step ... enddo` 

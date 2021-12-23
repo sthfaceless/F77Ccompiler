@@ -12,9 +12,9 @@ c Begin commentary
         read(*, *) a, b, c
         print *, a ** b + c
 
-        if (a.xor.1) then
-            write (*,*) "Ha ""a"" is greater than 1, it's", a, "you are crazy"
-        elseif (b.eqv.1) then
+        if (a.ge.1) then
+            write (*,*) """a"" greater than 1, it's", a, "you are crazy"
+        elseif (b.le.1) then
             write (*,*) "Let's make ""b"" greater by 3", b+3
         else
             write (*,*) "Calculate hypo for ""b"" and ""c""", hypo(b, c)
