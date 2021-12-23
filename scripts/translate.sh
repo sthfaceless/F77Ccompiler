@@ -13,4 +13,4 @@ then
   output_file="${PROJECT_DIR}/example.c"
 fi
 
-"${PROJECT_DIR}/cmake-build-debug/lexer" < "${input_file}" > "${output_file}"
+"${PROJECT_DIR}/cmake-build-debug/lexer"  < "${input_file}" > "${output_file}"

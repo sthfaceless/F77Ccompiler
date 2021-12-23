@@ -248,6 +248,11 @@ aexp: fn_call {$$ = new eval_tree(e_name, $1);}
 	program_root.add_header(def_uminus);
 	$$ = new eval_tree(e_uminus, sexpr("-"), {$2});
 }
+| ADD aexp
+{
+	program_root.add_header(def_uplus);
+	$$ = new eval_tree(e_uplus, sexpr("+"), {$2});
+}
 | aexp CMP aexp
 {
 	program_root.add_header(get_cmp_header($2));
@@ -287,9 +292,12 @@ aexp: fn_call {$$ = new eval_tree(e_name, $1);}
 }
 ;
 %%
-int main(){
+int main(int argc, char **args){
 //	yydebug = 1;
-//	debug();
-	yyparse();
+	if(argc > 1 && **(args+1) == '-' && *(*(args+1)+1) == 'd'){
+		debug();
+	}else {
+		yyparse();
+	}
 	return 0;
 }

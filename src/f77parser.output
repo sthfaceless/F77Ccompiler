@@ -115,13 +115,14 @@
    80     | aexp ADD aexp
    81     | aexp MINUS aexp
    82     | MINUS aexp
-   83     | aexp CMP aexp
-   84     | aexp EQV aexp
-   85     | aexp NEQV aexp
-   86     | aexp OR aexp
-   87     | aexp AND aexp
-   88     | aexp XOR aexp
-   89     | NOT aexp
+   83     | ADD aexp
+   84     | aexp CMP aexp
+   85     | aexp EQV aexp
+   86     | aexp NEQV aexp
+   87     | aexp OR aexp
+   88     | aexp AND aexp
+   89     | aexp XOR aexp
+   90     | NOT aexp
 
 
 Терминальные символы с правилами, в которых они появляются
@@ -156,7 +157,7 @@
     CLOSE (283) 42
     FORMAT (284)
     AFILE (285) 41
-    ADD (286) 80
+    ADD (286) 80 83
     MINUS (287) 81 82
     MUL (288) 49 71 78
     POW (289) 77
@@ -167,13 +168,13 @@
     COMMA (294) 35 36 41 44 45 46 48 54 69
     COLON (295)
     PARAM (296)
-    CMP <_str> (297) 83
-    OR <_str> (298) 86
-    XOR <_str> (299) 88
-    AND <_str> (300) 87
-    EQV <_str> (301) 84
-    NEQV <_str> (302) 85
-    NOT <_str> (303) 89
+    CMP <_str> (297) 84
+    OR <_str> (298) 87
+    XOR <_str> (299) 89
+    AND <_str> (300) 88
+    EQV <_str> (301) 85
+    NEQV <_str> (302) 86
+    NOT <_str> (303) 90
     COMMENT <_str> (304) 4 6 9 10 11 12 14 15
     SYMNAME <_str> (305) 19 35 36 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 75
     CHARS <_constant> (306) 74
@@ -255,8 +256,8 @@
         on left: 70 71
         on right: 53 57 59
     aexp <_eval_tree> (78)
-        on left: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89
-        on right: 19 29 30 31 32 33 34 35 36 37 41 42 44 45 48 50 55 56 68 69 76 77 78 79 80 81 82 83 84 85 86 87 88 89
+        on left: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90
+        on right: 19 29 30 31 32 33 34 35 36 37 41 42 44 45 48 50 55 56 68 69 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90
 
 
 Состояние 0
@@ -481,33 +482,35 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    MUL          сдвиг, и переход в состояние 48
-    LEFT_PARENT  сдвиг, и переход в состояние 49
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    MUL          сдвиг, и переход в состояние 49
+    LEFT_PARENT  сдвиг, и переход в состояние 50
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    format   переход в состояние 54
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 56
+    format   переход в состояние 55
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 57
 
 
 Состояние 14
 
    46 write_stmt: WRITE . LEFT_PARENT format COMMA format RIGHT_PARENT exp_list
 
-    LEFT_PARENT  сдвиг, и переход в состояние 57
+    LEFT_PARENT  сдвиг, и переход в состояние 58
 
 
 Состояние 15
@@ -530,40 +533,42 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    MUL          сдвиг, и переход в состояние 48
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    MUL          сдвиг, и переход в состояние 49
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    format   переход в состояние 59
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 56
+    format   переход в состояние 60
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 57
 
 
 Состояние 16
 
    41 io_stmt: OPEN . LEFT_PARENT aexp COMMA AFILE EQUAL aexp RIGHT_PARENT
 
-    LEFT_PARENT  сдвиг, и переход в состояние 60
+    LEFT_PARENT  сдвиг, и переход в состояние 61
 
 
 Состояние 17
 
    42 io_stmt: CLOSE . LEFT_PARENT aexp RIGHT_PARENT
 
-    LEFT_PARENT  сдвиг, и переход в состояние 61
+    LEFT_PARENT  сдвиг, и переход в состояние 62
 
 
 Состояние 18
@@ -581,8 +586,8 @@
    64 fn_call: SYMNAME . LEFT_PARENT RIGHT_PARENT
    65        | SYMNAME . LEFT_PARENT exp_list RIGHT_PARENT
 
-    EQUAL        сдвиг, и переход в состояние 62
-    LEFT_PARENT  сдвиг, и переход в состояние 63
+    EQUAL        сдвиг, и переход в состояние 63
+    LEFT_PARENT  сдвиг, и переход в состояние 64
 
 
 Состояние 20
@@ -590,7 +595,7 @@
    70 type: TYPE .  [FUNCTION, SYMNAME]
    71     | TYPE . MUL NUMBER
 
-    MUL  сдвиг, и переход в состояние 64
+    MUL  сдвиг, и переход в состояние 65
 
     $default  вывод с использованием правила 70 (type)
 
@@ -599,7 +604,7 @@
 
     0 $accept: program . $end
 
-    $end  сдвиг, и переход в состояние 65
+    $end  сдвиг, и переход в состояние 66
 
 
 Состояние 22
@@ -677,11 +682,11 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 66
+    COMMENT     сдвиг, и переход в состояние 67
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    program_body  переход в состояние 67
+    program_body  переход в состояние 68
     exec_stmt     переход в состояние 24
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
@@ -691,7 +696,7 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 68
+    nonexec_stmt  переход в состояние 69
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
@@ -704,9 +709,9 @@
     9 program_end: . END COMMENT
    10            | . program_end COMMENT
 
-    END  сдвиг, и переход в состояние 69
+    END  сдвиг, и переход в состояние 70
 
-    program_end  переход в состояние 70
+    program_end  переход в состояние 71
 
 
 Состояние 24
@@ -718,7 +723,7 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 71
+    stmts  переход в состояние 72
 
 
 Состояние 25
@@ -761,7 +766,7 @@
    38 io_stmt: read_stmt .  [COMMENT]
    45 read_stmt: read_stmt . COMMA aexp
 
-    COMMA  сдвиг, и переход в состояние 72
+    COMMA  сдвиг, и переход в состояние 73
 
     $default  вывод с использованием правила 38 (io_stmt)
 
@@ -778,7 +783,7 @@
    40 io_stmt: print_stmt .  [COMMENT]
    48 print_stmt: print_stmt . COMMA aexp
 
-    COMMA  сдвиг, и переход в состояние 73
+    COMMA  сдвиг, и переход в состояние 74
 
     $default  вывод с использованием правила 40 (io_stmt)
 
@@ -795,7 +800,7 @@
    52 nonexec_stmt: var_def .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, COMMENT, SYMNAME, TYPE]
    54 var_def: var_def . COMMA SYMNAME
 
-    COMMA  сдвиг, и переход в состояние 74
+    COMMA  сдвиг, и переход в состояние 75
 
     $default  вывод с использованием правила 52 (nonexec_stmt)
 
@@ -820,8 +825,8 @@
    57 fn_def: type . FUNCTION SYMNAME LEFT_PARENT RIGHT_PARENT stmts END
    59       | type . FUNCTION SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END
 
-    FUNCTION  сдвиг, и переход в состояние 75
-    SYMNAME   сдвиг, и переход в состояние 76
+    FUNCTION  сдвиг, и переход в состояние 76
+    SYMNAME   сдвиг, и переход в состояние 77
 
 
 Состояние 38
@@ -905,14 +910,14 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
     $default  вывод с использованием правила 7 (program_body)
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -921,7 +926,7 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
@@ -933,7 +938,7 @@
    58 fn_def: FUNCTION SYMNAME . LEFT_PARENT RIGHT_PARENT stmts END
    60       | FUNCTION SYMNAME . LEFT_PARENT exp_list RIGHT_PARENT stmts END
 
-    LEFT_PARENT  сдвиг, и переход в состояние 81
+    LEFT_PARENT  сдвиг, и переход в состояние 82
 
 
 Состояние 41
@@ -945,10 +950,10 @@
    62       | SUBROUTINE SYMNAME . LEFT_PARENT RIGHT_PARENT stmts END
    63       | SUBROUTINE SYMNAME . LEFT_PARENT exp_list RIGHT_PARENT stmts END
 
-    LEFT_PARENT  сдвиг, и переход в состояние 82
+    LEFT_PARENT  сдвиг, и переход в состояние 83
     COMMENT      сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 83
+    stmts  переход в состояние 84
 
 
 Состояние 42
@@ -956,7 +961,7 @@
    66 fn_call: CALL SYMNAME . LEFT_PARENT RIGHT_PARENT
    67        | CALL SYMNAME . LEFT_PARENT exp_list RIGHT_PARENT
 
-    LEFT_PARENT  сдвиг, и переход в состояние 84
+    LEFT_PARENT  сдвиг, и переход в состояние 85
 
 
 Состояние 43
@@ -987,24 +992,26 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 85
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 86
 
 
 Состояние 45
@@ -1025,24 +1032,26 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 86
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 87
 
 
 Состояние 46
@@ -1050,7 +1059,7 @@
    35 do_stmt: DO SYMNAME . EQUAL aexp COMMA aexp stmts ENDDO
    36        | DO SYMNAME . EQUAL aexp COMMA aexp COMMA aexp stmts ENDDO
 
-    EQUAL  сдвиг, и переход в состояние 87
+    EQUAL  сдвиг, и переход в состояние 88
 
 
 Состояние 47
@@ -1070,35 +1079,77 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   82     | MINUS . aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   83     | ADD . aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 88
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 89
 
 
 Состояние 48
+
+   64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
+   65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
+   66        | . CALL SYMNAME LEFT_PARENT RIGHT_PARENT
+   67        | . CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
+   72 aexp: . fn_call
+   73     | . NUMBER
+   74     | . CHARS
+   75     | . SYMNAME
+   76     | . LEFT_PARENT aexp RIGHT_PARENT
+   77     | . aexp POW aexp
+   78     | . aexp MUL aexp
+   79     | . aexp DIV aexp
+   80     | . aexp ADD aexp
+   81     | . aexp MINUS aexp
+   82     | . MINUS aexp
+   82     | MINUS . aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
+
+    CALL         сдвиг, и переход в состояние 5
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
+
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 90
+
+
+Состояние 49
 
    49 format: MUL .
 
     $default  вывод с использованием правила 49 (format)
 
 
-Состояние 49
+Состояние 50
 
    44 read_stmt: READ LEFT_PARENT . format COMMA format RIGHT_PARENT aexp
    49 format: . MUL
@@ -1119,29 +1170,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    MUL          сдвиг, и переход в состояние 48
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    MUL          сдвиг, и переход в состояние 49
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    format   переход в состояние 89
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 90
+    format   переход в состояние 91
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 92
 
 
-Состояние 50
+Состояние 51
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -1158,67 +1211,69 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
-   89     | NOT . aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
+   90     | NOT . aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 91
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 93
 
 
-Состояние 51
+Состояние 52
 
    64 fn_call: SYMNAME . LEFT_PARENT RIGHT_PARENT
    65        | SYMNAME . LEFT_PARENT exp_list RIGHT_PARENT
    75 aexp: SYMNAME .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, NEQV, COMMENT, SYMNAME, TYPE]
 
-    LEFT_PARENT  сдвиг, и переход в состояние 92
+    LEFT_PARENT  сдвиг, и переход в состояние 94
 
     $default  вывод с использованием правила 75 (aexp)
 
 
-Состояние 52
+Состояние 53
 
    74 aexp: CHARS .
 
     $default  вывод с использованием правила 74 (aexp)
 
 
-Состояние 53
+Состояние 54
 
    73 aexp: NUMBER .
 
     $default  вывод с использованием правила 73 (aexp)
 
 
-Состояние 54
+Состояние 55
 
    43 read_stmt: READ format .
 
     $default  вывод с использованием правила 43 (read_stmt)
 
 
-Состояние 55
+Состояние 56
 
    72 aexp: fn_call .
 
     $default  вывод с использованием правила 72 (aexp)
 
 
-Состояние 56
+Состояние 57
 
    50 format: aexp .  [RIGHT_PARENT, COMMA, COMMENT]
    77 aexp: aexp . POW aexp
@@ -1226,29 +1281,29 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 50 (format)
 
 
-Состояние 57
+Состояние 58
 
    46 write_stmt: WRITE LEFT_PARENT . format COMMA format RIGHT_PARENT exp_list
    49 format: . MUL
@@ -1268,29 +1323,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    MUL          сдвиг, и переход в состояние 48
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    MUL          сдвиг, и переход в состояние 49
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    format   переход в состояние 104
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 56
+    format   переход в состояние 106
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 57
 
 
-Состояние 58
+Состояние 59
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -1308,34 +1365,36 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 105
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 107
 
 
-Состояние 59
+Состояние 60
 
    47 print_stmt: PRINT format .
 
     $default  вывод с использованием правила 47 (print_stmt)
 
 
-Состояние 60
+Состояние 61
 
    41 io_stmt: OPEN LEFT_PARENT . aexp COMMA AFILE EQUAL aexp RIGHT_PARENT
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -1353,27 +1412,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 106
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 108
 
 
-Состояние 61
+Состояние 62
 
    42 io_stmt: CLOSE LEFT_PARENT . aexp RIGHT_PARENT
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -1391,27 +1452,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 107
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 109
 
 
-Состояние 62
+Состояние 63
 
    19 assign_stmt: SYMNAME EQUAL . aexp
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -1429,27 +1492,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 108
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 110
 
 
-Состояние 63
+Состояние 64
 
    55 fn_def: SYMNAME LEFT_PARENT . RIGHT_PARENT EQUAL aexp
    56       | SYMNAME LEFT_PARENT . exp_list RIGHT_PARENT EQUAL aexp
@@ -1472,84 +1537,86 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL          сдвиг, и переход в состояние 5
-    MINUS         сдвиг, и переход в состояние 47
-    LEFT_PARENT   сдвиг, и переход в состояние 58
-    RIGHT_PARENT  сдвиг, и переход в состояние 109
-    NOT           сдвиг, и переход в состояние 50
-    SYMNAME       сдвиг, и переход в состояние 51
-    CHARS         сдвиг, и переход в состояние 52
-    NUMBER        сдвиг, и переход в состояние 53
+    ADD           сдвиг, и переход в состояние 47
+    MINUS         сдвиг, и переход в состояние 48
+    LEFT_PARENT   сдвиг, и переход в состояние 59
+    RIGHT_PARENT  сдвиг, и переход в состояние 111
+    NOT           сдвиг, и переход в состояние 51
+    SYMNAME       сдвиг, и переход в состояние 52
+    CHARS         сдвиг, и переход в состояние 53
+    NUMBER        сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 110
-    aexp      переход в состояние 111
-
-
-Состояние 64
-
-   71 type: TYPE MUL . NUMBER
-
-    NUMBER  сдвиг, и переход в состояние 112
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 112
+    aexp      переход в состояние 113
 
 
 Состояние 65
+
+   71 type: TYPE MUL . NUMBER
+
+    NUMBER  сдвиг, и переход в состояние 114
+
+
+Состояние 66
 
     0 $accept: program $end .
 
     $default  принять
 
 
-Состояние 66
+Состояние 67
 
     6 program_head: program_head COMMENT .
 
     $default  вывод с использованием правила 6 (program_head)
 
 
-Состояние 67
+Состояние 68
 
     1 program: program_head program_body . program_end END_OF_FILE
     9 program_end: . END COMMENT
    10            | . program_end COMMENT
 
-    END  сдвиг, и переход в состояние 69
+    END  сдвиг, и переход в состояние 70
 
-    program_end  переход в состояние 113
+    program_end  переход в состояние 115
 
 
-Состояние 68
+Состояние 69
 
     5 program_head: program_head nonexec_stmt .
 
     $default  вывод с использованием правила 5 (program_head)
 
 
-Состояние 69
+Состояние 70
 
     9 program_end: END . COMMENT
 
-    COMMENT  сдвиг, и переход в состояние 114
+    COMMENT  сдвиг, и переход в состояние 116
 
 
-Состояние 70
+Состояние 71
 
     2 program: program_body program_end . END_OF_FILE
    10 program_end: program_end . COMMENT
 
-    END_OF_FILE  сдвиг, и переход в состояние 115
-    COMMENT      сдвиг, и переход в состояние 116
+    END_OF_FILE  сдвиг, и переход в состояние 117
+    COMMENT      сдвиг, и переход в состояние 118
 
 
-Состояние 71
+Состояние 72
 
     8 program_body: exec_stmt stmts .  [END]
    12 stmts: stmts . COMMENT
@@ -1623,14 +1690,14 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
     $default  вывод с использованием правила 8 (program_body)
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -1639,14 +1706,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 72
+Состояние 73
 
    45 read_stmt: read_stmt COMMA . aexp
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -1664,27 +1731,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 117
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 119
 
 
-Состояние 73
+Состояние 74
 
    48 print_stmt: print_stmt COMMA . aexp
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -1702,77 +1771,79 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 118
-
-
-Состояние 74
-
-   54 var_def: var_def COMMA . SYMNAME
-
-    SYMNAME  сдвиг, и переход в состояние 119
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 120
 
 
 Состояние 75
 
-   57 fn_def: type FUNCTION . SYMNAME LEFT_PARENT RIGHT_PARENT stmts END
-   59       | type FUNCTION . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END
+   54 var_def: var_def COMMA . SYMNAME
 
-    SYMNAME  сдвиг, и переход в состояние 120
+    SYMNAME  сдвиг, и переход в состояние 121
 
 
 Состояние 76
+
+   57 fn_def: type FUNCTION . SYMNAME LEFT_PARENT RIGHT_PARENT stmts END
+   59       | type FUNCTION . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END
+
+    SYMNAME  сдвиг, и переход в состояние 122
+
+
+Состояние 77
 
    53 var_def: type SYMNAME .
 
     $default  вывод с использованием правила 53 (var_def)
 
 
-Состояние 77
+Состояние 78
 
    12 stmts: stmts COMMENT .
 
     $default  вывод с использованием правила 12 (stmts)
 
 
-Состояние 78
+Состояние 79
 
    13 stmts: stmts stmt .
 
     $default  вывод с использованием правила 13 (stmts)
 
 
-Состояние 79
+Состояние 80
 
    14 stmt: exec_stmt . COMMENT
 
-    COMMENT  сдвиг, и переход в состояние 121
-
-
-Состояние 80
-
-   15 stmt: nonexec_stmt . COMMENT
-
-    COMMENT  сдвиг, и переход в состояние 122
+    COMMENT  сдвиг, и переход в состояние 123
 
 
 Состояние 81
+
+   15 stmt: nonexec_stmt . COMMENT
+
+    COMMENT  сдвиг, и переход в состояние 124
+
+
+Состояние 82
 
    58 fn_def: FUNCTION SYMNAME LEFT_PARENT . RIGHT_PARENT stmts END
    60       | FUNCTION SYMNAME LEFT_PARENT . exp_list RIGHT_PARENT stmts END
@@ -1793,29 +1864,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL          сдвиг, и переход в состояние 5
-    MINUS         сдвиг, и переход в состояние 47
-    LEFT_PARENT   сдвиг, и переход в состояние 58
-    RIGHT_PARENT  сдвиг, и переход в состояние 123
-    NOT           сдвиг, и переход в состояние 50
-    SYMNAME       сдвиг, и переход в состояние 51
-    CHARS         сдвиг, и переход в состояние 52
-    NUMBER        сдвиг, и переход в состояние 53
+    ADD           сдвиг, и переход в состояние 47
+    MINUS         сдвиг, и переход в состояние 48
+    LEFT_PARENT   сдвиг, и переход в состояние 59
+    RIGHT_PARENT  сдвиг, и переход в состояние 125
+    NOT           сдвиг, и переход в состояние 51
+    SYMNAME       сдвиг, и переход в состояние 52
+    CHARS         сдвиг, и переход в состояние 53
+    NUMBER        сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 124
-    aexp      переход в состояние 111
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 126
+    aexp      переход в состояние 113
 
 
-Состояние 82
+Состояние 83
 
    62 fn_def: SUBROUTINE SYMNAME LEFT_PARENT . RIGHT_PARENT stmts END
    63       | SUBROUTINE SYMNAME LEFT_PARENT . exp_list RIGHT_PARENT stmts END
@@ -1836,29 +1909,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL          сдвиг, и переход в состояние 5
-    MINUS         сдвиг, и переход в состояние 47
-    LEFT_PARENT   сдвиг, и переход в состояние 58
-    RIGHT_PARENT  сдвиг, и переход в состояние 125
-    NOT           сдвиг, и переход в состояние 50
-    SYMNAME       сдвиг, и переход в состояние 51
-    CHARS         сдвиг, и переход в состояние 52
-    NUMBER        сдвиг, и переход в состояние 53
+    ADD           сдвиг, и переход в состояние 47
+    MINUS         сдвиг, и переход в состояние 48
+    LEFT_PARENT   сдвиг, и переход в состояние 59
+    RIGHT_PARENT  сдвиг, и переход в состояние 127
+    NOT           сдвиг, и переход в состояние 51
+    SYMNAME       сдвиг, и переход в состояние 52
+    CHARS         сдвиг, и переход в состояние 53
+    NUMBER        сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 126
-    aexp      переход в состояние 111
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 128
+    aexp      переход в состояние 113
 
 
-Состояние 83
+Состояние 84
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -1916,7 +1991,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 127
+    END         сдвиг, и переход в состояние 129
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -1933,12 +2008,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -1947,14 +2022,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 84
+Состояние 85
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -1975,29 +2050,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL          сдвиг, и переход в состояние 5
-    MINUS         сдвиг, и переход в состояние 47
-    LEFT_PARENT   сдвиг, и переход в состояние 58
-    RIGHT_PARENT  сдвиг, и переход в состояние 128
-    NOT           сдвиг, и переход в состояние 50
-    SYMNAME       сдвиг, и переход в состояние 51
-    CHARS         сдвиг, и переход в состояние 52
-    NUMBER        сдвиг, и переход в состояние 53
+    ADD           сдвиг, и переход в состояние 47
+    MINUS         сдвиг, и переход в состояние 48
+    LEFT_PARENT   сдвиг, и переход в состояние 59
+    RIGHT_PARENT  сдвиг, и переход в состояние 130
+    NOT           сдвиг, и переход в состояние 51
+    SYMNAME       сдвиг, и переход в состояние 52
+    CHARS         сдвиг, и переход в состояние 53
+    NUMBER        сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 129
-    aexp      переход в состояние 111
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 131
+    aexp      переход в состояние 113
 
 
-Состояние 85
+Состояние 86
 
    29 if_stmt: IF LEFT_PARENT aexp . RIGHT_PARENT THEN stmts ENDIF
    30        | IF LEFT_PARENT aexp . RIGHT_PARENT THEN stmts ELSE stmts ENDIF
@@ -2008,28 +2085,28 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 130
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 132
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
 
-Состояние 86
+Состояние 87
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -2040,30 +2117,30 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD      сдвиг, и переход в состояние 93
-    MINUS    сдвиг, и переход в состояние 94
-    MUL      сдвиг, и переход в состояние 95
-    POW      сдвиг, и переход в состояние 96
-    DIV      сдвиг, и переход в состояние 97
-    CMP      сдвиг, и переход в состояние 98
-    OR       сдвиг, и переход в состояние 99
-    XOR      сдвиг, и переход в состояние 100
-    AND      сдвиг, и переход в состояние 101
-    EQV      сдвиг, и переход в состояние 102
-    NEQV     сдвиг, и переход в состояние 103
+    ADD      сдвиг, и переход в состояние 95
+    MINUS    сдвиг, и переход в состояние 96
+    MUL      сдвиг, и переход в состояние 97
+    POW      сдвиг, и переход в состояние 98
+    DIV      сдвиг, и переход в состояние 99
+    CMP      сдвиг, и переход в состояние 100
+    OR       сдвиг, и переход в состояние 101
+    XOR      сдвиг, и переход в состояние 102
+    AND      сдвиг, и переход в состояние 103
+    EQV      сдвиг, и переход в состояние 104
+    NEQV     сдвиг, и переход в состояние 105
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 131
+    stmts  переход в состояние 133
 
 
-Состояние 87
+Состояние 88
 
    35 do_stmt: DO SYMNAME EQUAL . aexp COMMA aexp stmts ENDDO
    36        | DO SYMNAME EQUAL . aexp COMMA aexp COMMA aexp stmts ENDDO
@@ -2082,27 +2159,68 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 132
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 134
 
 
-Состояние 88
+Состояние 89
+
+   77 aexp: aexp . POW aexp
+   78     | aexp . MUL aexp
+   79     | aexp . DIV aexp
+   80     | aexp . ADD aexp
+   81     | aexp . MINUS aexp
+   83     | ADD aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, RIGHT_PARENT, COMMA, CMP, COMMENT, SYMNAME, TYPE]
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
+
+    MUL   сдвиг, и переход в состояние 97
+    POW   сдвиг, и переход в состояние 98
+    DIV   сдвиг, и переход в состояние 99
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 83 (aexp)
+
+    Conflict between rule 83 and token ADD resolved as reduce (%left ADD).
+    Conflict between rule 83 and token MINUS resolved as reduce (%left MINUS).
+    Conflict between rule 83 and token MUL resolved as shift (ADD < MUL).
+    Conflict between rule 83 and token POW resolved as shift (ADD < POW).
+    Conflict between rule 83 and token DIV resolved as shift (ADD < DIV).
+    Conflict between rule 83 and token CMP resolved as reduce (CMP < ADD).
+    Conflict between rule 83 and token OR resolved as shift (ADD < OR).
+    Conflict between rule 83 and token XOR resolved as shift (ADD < XOR).
+    Conflict between rule 83 and token AND resolved as shift (ADD < AND).
+    Conflict between rule 83 and token EQV resolved as shift (ADD < EQV).
+    Conflict between rule 83 and token NEQV resolved as shift (ADD < NEQV).
+
+
+Состояние 90
 
    77 aexp: aexp . POW aexp
    78     | aexp . MUL aexp
@@ -2110,21 +2228,21 @@
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
    82     | MINUS aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, RIGHT_PARENT, COMMA, CMP, COMMENT, SYMNAME, TYPE]
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    MUL   сдвиг, и переход в состояние 95
-    POW   сдвиг, и переход в состояние 96
-    DIV   сдвиг, и переход в состояние 97
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    EQV   сдвиг, и переход в состояние 102
-    NEQV  сдвиг, и переход в состояние 103
+    MUL   сдвиг, и переход в состояние 97
+    POW   сдвиг, и переход в состояние 98
+    DIV   сдвиг, и переход в состояние 99
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 82 (aexp)
 
@@ -2141,14 +2259,14 @@
     Conflict between rule 82 and token NEQV resolved as shift (MINUS < NEQV).
 
 
-Состояние 89
+Состояние 91
 
    44 read_stmt: READ LEFT_PARENT format . COMMA format RIGHT_PARENT aexp
 
-    COMMA  сдвиг, и переход в состояние 133
+    COMMA  сдвиг, и переход в состояние 135
 
 
-Состояние 90
+Состояние 92
 
    50 format: aexp .  [COMMA]
    76 aexp: LEFT_PARENT aexp . RIGHT_PARENT
@@ -2157,60 +2275,60 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 134
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 136
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 50 (format)
 
 
-Состояние 91
+Состояние 93
 
    77 aexp: aexp . POW aexp
    78     | aexp . MUL aexp
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
-   89     | NOT aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, NEQV, COMMENT, SYMNAME, TYPE]
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
+   90     | NOT aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, NEQV, COMMENT, SYMNAME, TYPE]
 
-    $default  вывод с использованием правила 89 (aexp)
+    $default  вывод с использованием правила 90 (aexp)
 
-    Conflict between rule 89 and token ADD resolved as reduce (ADD < NOT).
-    Conflict between rule 89 and token MINUS resolved as reduce (MINUS < NOT).
-    Conflict between rule 89 and token MUL resolved as reduce (MUL < NOT).
-    Conflict between rule 89 and token POW resolved as reduce (POW < NOT).
-    Conflict between rule 89 and token DIV resolved as reduce (DIV < NOT).
-    Conflict between rule 89 and token CMP resolved as reduce (CMP < NOT).
-    Conflict between rule 89 and token OR resolved as reduce (OR < NOT).
-    Conflict between rule 89 and token XOR resolved as reduce (XOR < NOT).
-    Conflict between rule 89 and token AND resolved as reduce (AND < NOT).
-    Conflict between rule 89 and token EQV resolved as reduce (EQV < NOT).
-    Conflict between rule 89 and token NEQV resolved as reduce (NEQV < NOT).
+    Conflict between rule 90 and token ADD resolved as reduce (ADD < NOT).
+    Conflict between rule 90 and token MINUS resolved as reduce (MINUS < NOT).
+    Conflict between rule 90 and token MUL resolved as reduce (MUL < NOT).
+    Conflict between rule 90 and token POW resolved as reduce (POW < NOT).
+    Conflict between rule 90 and token DIV resolved as reduce (DIV < NOT).
+    Conflict between rule 90 and token CMP resolved as reduce (CMP < NOT).
+    Conflict between rule 90 and token OR resolved as reduce (OR < NOT).
+    Conflict between rule 90 and token XOR resolved as reduce (XOR < NOT).
+    Conflict between rule 90 and token AND resolved as reduce (AND < NOT).
+    Conflict between rule 90 and token EQV resolved as reduce (EQV < NOT).
+    Conflict between rule 90 and token NEQV resolved as reduce (NEQV < NOT).
 
 
-Состояние 92
+Состояние 94
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    64        | SYMNAME LEFT_PARENT . RIGHT_PARENT
@@ -2231,29 +2349,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL          сдвиг, и переход в состояние 5
-    MINUS         сдвиг, и переход в состояние 47
-    LEFT_PARENT   сдвиг, и переход в состояние 58
-    RIGHT_PARENT  сдвиг, и переход в состояние 135
-    NOT           сдвиг, и переход в состояние 50
-    SYMNAME       сдвиг, и переход в состояние 51
-    CHARS         сдвиг, и переход в состояние 52
-    NUMBER        сдвиг, и переход в состояние 53
+    ADD           сдвиг, и переход в состояние 47
+    MINUS         сдвиг, и переход в состояние 48
+    LEFT_PARENT   сдвиг, и переход в состояние 59
+    RIGHT_PARENT  сдвиг, и переход в состояние 137
+    NOT           сдвиг, и переход в состояние 51
+    SYMNAME       сдвиг, и переход в состояние 52
+    CHARS         сдвиг, и переход в состояние 53
+    NUMBER        сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 136
-    aexp      переход в состояние 111
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 138
+    aexp      переход в состояние 113
 
 
-Состояние 93
+Состояние 95
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -2271,27 +2391,29 @@
    80     | aexp ADD . aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 137
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 139
 
 
-Состояние 94
+Состояние 96
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -2309,27 +2431,29 @@
    81     | . aexp MINUS aexp
    81     | aexp MINUS . aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 138
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 140
 
 
-Состояние 95
+Состояние 97
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -2347,27 +2471,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 139
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 141
 
 
-Состояние 96
+Состояние 98
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -2385,99 +2511,25 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 140
-
-
-Состояние 97
-
-   64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
-   65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
-   66        | . CALL SYMNAME LEFT_PARENT RIGHT_PARENT
-   67        | . CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
-   72 aexp: . fn_call
-   73     | . NUMBER
-   74     | . CHARS
-   75     | . SYMNAME
-   76     | . LEFT_PARENT aexp RIGHT_PARENT
-   77     | . aexp POW aexp
-   78     | . aexp MUL aexp
-   79     | . aexp DIV aexp
-   79     | aexp DIV . aexp
-   80     | . aexp ADD aexp
-   81     | . aexp MINUS aexp
-   82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
-
-    CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
-
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 141
-
-
-Состояние 98
-
-   64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
-   65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
-   66        | . CALL SYMNAME LEFT_PARENT RIGHT_PARENT
-   67        | . CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
-   72 aexp: . fn_call
-   73     | . NUMBER
-   74     | . CHARS
-   75     | . SYMNAME
-   76     | . LEFT_PARENT aexp RIGHT_PARENT
-   77     | . aexp POW aexp
-   78     | . aexp MUL aexp
-   79     | . aexp DIV aexp
-   80     | . aexp ADD aexp
-   81     | . aexp MINUS aexp
-   82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   83     | aexp CMP . aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
-
-    CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
-
-    fn_call  переход в состояние 55
+    fn_call  переход в состояние 56
     aexp     переход в состояние 142
 
 
@@ -2495,27 +2547,29 @@
    77     | . aexp POW aexp
    78     | . aexp MUL aexp
    79     | . aexp DIV aexp
+   79     | aexp DIV . aexp
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   86     | aexp OR . aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
+    fn_call  переход в состояние 56
     aexp     переход в состояние 143
 
 
@@ -2536,24 +2590,26 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   88     | aexp XOR . aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   84     | aexp CMP . aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
+    fn_call  переход в состояние 56
     aexp     переход в состояние 144
 
 
@@ -2574,24 +2630,26 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   87     | aexp AND . aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   87     | aexp OR . aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
+    fn_call  переход в состояние 56
     aexp     переход в состояние 145
 
 
@@ -2612,24 +2670,26 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   84     | aexp EQV . aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   89     | aexp XOR . aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
+    fn_call  переход в состояние 56
     aexp     переход в состояние 146
 
 
@@ -2650,35 +2710,117 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   85     | aexp NEQV . aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   88     | aexp AND . aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
+    fn_call  переход в состояние 56
     aexp     переход в состояние 147
 
 
 Состояние 104
 
-   46 write_stmt: WRITE LEFT_PARENT format . COMMA format RIGHT_PARENT exp_list
+   64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
+   65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
+   66        | . CALL SYMNAME LEFT_PARENT RIGHT_PARENT
+   67        | . CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
+   72 aexp: . fn_call
+   73     | . NUMBER
+   74     | . CHARS
+   75     | . SYMNAME
+   76     | . LEFT_PARENT aexp RIGHT_PARENT
+   77     | . aexp POW aexp
+   78     | . aexp MUL aexp
+   79     | . aexp DIV aexp
+   80     | . aexp ADD aexp
+   81     | . aexp MINUS aexp
+   82     | . MINUS aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   85     | aexp EQV . aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
-    COMMA  сдвиг, и переход в состояние 148
+    CALL         сдвиг, и переход в состояние 5
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
+
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 148
 
 
 Состояние 105
+
+   64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
+   65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
+   66        | . CALL SYMNAME LEFT_PARENT RIGHT_PARENT
+   67        | . CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
+   72 aexp: . fn_call
+   73     | . NUMBER
+   74     | . CHARS
+   75     | . SYMNAME
+   76     | . LEFT_PARENT aexp RIGHT_PARENT
+   77     | . aexp POW aexp
+   78     | . aexp MUL aexp
+   79     | . aexp DIV aexp
+   80     | . aexp ADD aexp
+   81     | . aexp MINUS aexp
+   82     | . MINUS aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   86     | aexp NEQV . aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
+
+    CALL         сдвиг, и переход в состояние 5
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
+
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 149
+
+
+Состояние 106
+
+   46 write_stmt: WRITE LEFT_PARENT format . COMMA format RIGHT_PARENT exp_list
+
+    COMMA  сдвиг, и переход в состояние 150
+
+
+Состояние 107
 
    76 aexp: LEFT_PARENT aexp . RIGHT_PARENT
    77     | aexp . POW aexp
@@ -2686,28 +2828,28 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 134
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 136
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
 
-Состояние 106
+Состояние 108
 
    41 io_stmt: OPEN LEFT_PARENT aexp . COMMA AFILE EQUAL aexp RIGHT_PARENT
    77 aexp: aexp . POW aexp
@@ -2715,28 +2857,28 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    COMMA  сдвиг, и переход в состояние 149
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    COMMA  сдвиг, и переход в состояние 151
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
 
-Состояние 107
+Состояние 109
 
    42 io_stmt: CLOSE LEFT_PARENT aexp . RIGHT_PARENT
    77 aexp: aexp . POW aexp
@@ -2744,28 +2886,28 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 150
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 152
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
 
-Состояние 108
+Состояние 110
 
    19 assign_stmt: SYMNAME EQUAL aexp .  [COMMENT]
    77 aexp: aexp . POW aexp
@@ -2773,49 +2915,49 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 19 (assign_stmt)
 
 
-Состояние 109
+Состояние 111
 
    55 fn_def: SYMNAME LEFT_PARENT RIGHT_PARENT . EQUAL aexp
    64 fn_call: SYMNAME LEFT_PARENT RIGHT_PARENT .  [COMMENT]
 
-    EQUAL  сдвиг, и переход в состояние 151
+    EQUAL  сдвиг, и переход в состояние 153
 
     $default  вывод с использованием правила 64 (fn_call)
 
 
-Состояние 110
+Состояние 112
 
    56 fn_def: SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT EQUAL aexp
    65 fn_call: SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT
    69 exp_list: exp_list . COMMA aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 152
-    COMMA         сдвиг, и переход в состояние 153
+    RIGHT_PARENT  сдвиг, и переход в состояние 154
+    COMMA         сдвиг, и переход в состояние 155
 
 
-Состояние 111
+Состояние 113
 
    68 exp_list: aexp .  [RIGHT_PARENT, COMMA, COMMENT]
    77 aexp: aexp . POW aexp
@@ -2823,66 +2965,66 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 68 (exp_list)
 
 
-Состояние 112
+Состояние 114
 
    71 type: TYPE MUL NUMBER .
 
     $default  вывод с использованием правила 71 (type)
 
 
-Состояние 113
+Состояние 115
 
     1 program: program_head program_body program_end . END_OF_FILE
    10 program_end: program_end . COMMENT
 
-    END_OF_FILE  сдвиг, и переход в состояние 154
-    COMMENT      сдвиг, и переход в состояние 116
+    END_OF_FILE  сдвиг, и переход в состояние 156
+    COMMENT      сдвиг, и переход в состояние 118
 
 
-Состояние 114
+Состояние 116
 
     9 program_end: END COMMENT .
 
     $default  вывод с использованием правила 9 (program_end)
 
 
-Состояние 115
+Состояние 117
 
     2 program: program_body program_end END_OF_FILE .
 
     $default  вывод с использованием правила 2 (program)
 
 
-Состояние 116
+Состояние 118
 
    10 program_end: program_end COMMENT .
 
     $default  вывод с использованием правила 10 (program_end)
 
 
-Состояние 117
+Состояние 119
 
    45 read_stmt: read_stmt COMMA aexp .  [COMMA, COMMENT]
    77 aexp: aexp . POW aexp
@@ -2890,29 +3032,29 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 45 (read_stmt)
 
 
-Состояние 118
+Состояние 120
 
    48 print_stmt: print_stmt COMMA aexp .  [COMMA, COMMENT]
    77 aexp: aexp . POW aexp
@@ -2920,58 +3062,58 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 48 (print_stmt)
 
 
-Состояние 119
+Состояние 121
 
    54 var_def: var_def COMMA SYMNAME .
 
     $default  вывод с использованием правила 54 (var_def)
 
 
-Состояние 120
+Состояние 122
 
    57 fn_def: type FUNCTION SYMNAME . LEFT_PARENT RIGHT_PARENT stmts END
    59       | type FUNCTION SYMNAME . LEFT_PARENT exp_list RIGHT_PARENT stmts END
 
-    LEFT_PARENT  сдвиг, и переход в состояние 155
+    LEFT_PARENT  сдвиг, и переход в состояние 157
 
 
-Состояние 121
+Состояние 123
 
    14 stmt: exec_stmt COMMENT .
 
     $default  вывод с использованием правила 14 (stmt)
 
 
-Состояние 122
+Состояние 124
 
    15 stmt: nonexec_stmt COMMENT .
 
     $default  вывод с использованием правила 15 (stmt)
 
 
-Состояние 123
+Состояние 125
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -2980,19 +3122,19 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 156
+    stmts  переход в состояние 158
 
 
-Состояние 124
+Состояние 126
 
    60 fn_def: FUNCTION SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT stmts END
    69 exp_list: exp_list . COMMA aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 157
-    COMMA         сдвиг, и переход в состояние 153
+    RIGHT_PARENT  сдвиг, и переход в состояние 159
+    COMMA         сдвиг, и переход в состояние 155
 
 
-Состояние 125
+Состояние 127
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -3001,52 +3143,52 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 158
+    stmts  переход в состояние 160
 
 
-Состояние 126
+Состояние 128
 
    63 fn_def: SUBROUTINE SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT stmts END
    69 exp_list: exp_list . COMMA aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 159
-    COMMA         сдвиг, и переход в состояние 153
+    RIGHT_PARENT  сдвиг, и переход в состояние 161
+    COMMA         сдвиг, и переход в состояние 155
 
 
-Состояние 127
+Состояние 129
 
    61 fn_def: SUBROUTINE SYMNAME stmts END .
 
     $default  вывод с использованием правила 61 (fn_def)
 
 
-Состояние 128
+Состояние 130
 
    66 fn_call: CALL SYMNAME LEFT_PARENT RIGHT_PARENT .
 
     $default  вывод с использованием правила 66 (fn_call)
 
 
-Состояние 129
+Состояние 131
 
    67 fn_call: CALL SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT
    69 exp_list: exp_list . COMMA aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 160
-    COMMA         сдвиг, и переход в состояние 153
+    RIGHT_PARENT  сдвиг, и переход в состояние 162
+    COMMA         сдвиг, и переход в состояние 155
 
 
-Состояние 130
+Состояние 132
 
    29 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT . THEN stmts ENDIF
    30        | IF LEFT_PARENT aexp RIGHT_PARENT . THEN stmts ELSE stmts ENDIF
    31        | IF LEFT_PARENT aexp RIGHT_PARENT . THEN stmts elseif_stmt ELSE stmts ENDIF
    32        | IF LEFT_PARENT aexp RIGHT_PARENT . THEN stmts elseif_stmt ENDIF
 
-    THEN  сдвиг, и переход в состояние 161
+    THEN  сдвиг, и переход в состояние 163
 
 
-Состояние 131
+Состояние 133
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -3115,18 +3257,18 @@
     DO          сдвиг, и переход в состояние 10
     BREAK       сдвиг, и переход в состояние 11
     CONTINUE    сдвиг, и переход в состояние 12
-    ENDDO       сдвиг, и переход в состояние 162
+    ENDDO       сдвиг, и переход в состояние 164
     READ        сдвиг, и переход в состояние 13
     WRITE       сдвиг, и переход в состояние 14
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -3135,14 +3277,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 132
+Состояние 134
 
    35 do_stmt: DO SYMNAME EQUAL aexp . COMMA aexp stmts ENDDO
    36        | DO SYMNAME EQUAL aexp . COMMA aexp COMMA aexp stmts ENDDO
@@ -3151,28 +3293,28 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    COMMA  сдвиг, и переход в состояние 163
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    COMMA  сдвиг, и переход в состояние 165
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
 
-Состояние 133
+Состояние 135
 
    44 read_stmt: READ LEFT_PARENT format COMMA . format RIGHT_PARENT aexp
    49 format: . MUL
@@ -3192,52 +3334,54 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    MUL          сдвиг, и переход в состояние 48
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    MUL          сдвиг, и переход в состояние 49
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    format   переход в состояние 164
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 56
+    format   переход в состояние 166
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 57
 
 
-Состояние 134
+Состояние 136
 
    76 aexp: LEFT_PARENT aexp RIGHT_PARENT .
 
     $default  вывод с использованием правила 76 (aexp)
 
 
-Состояние 135
+Состояние 137
 
    64 fn_call: SYMNAME LEFT_PARENT RIGHT_PARENT .
 
     $default  вывод с использованием правила 64 (fn_call)
 
 
-Состояние 136
+Состояние 138
 
    65 fn_call: SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT
    69 exp_list: exp_list . COMMA aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 165
-    COMMA         сдвиг, и переход в состояние 153
+    RIGHT_PARENT  сдвиг, и переход в состояние 167
+    COMMA         сдвиг, и переход в состояние 155
 
 
-Состояние 137
+Состояние 139
 
    77 aexp: aexp . POW aexp
    78     | aexp . MUL aexp
@@ -3245,21 +3389,21 @@
    80     | aexp . ADD aexp
    80     | aexp ADD aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, RIGHT_PARENT, COMMA, CMP, COMMENT, SYMNAME, TYPE]
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    MUL   сдвиг, и переход в состояние 95
-    POW   сдвиг, и переход в состояние 96
-    DIV   сдвиг, и переход в состояние 97
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    EQV   сдвиг, и переход в состояние 102
-    NEQV  сдвиг, и переход в состояние 103
+    MUL   сдвиг, и переход в состояние 97
+    POW   сдвиг, и переход в состояние 98
+    DIV   сдвиг, и переход в состояние 99
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 80 (aexp)
 
@@ -3276,7 +3420,7 @@
     Conflict between rule 80 and token NEQV resolved as shift (ADD < NEQV).
 
 
-Состояние 138
+Состояние 140
 
    77 aexp: aexp . POW aexp
    78     | aexp . MUL aexp
@@ -3284,21 +3428,21 @@
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
    81     | aexp MINUS aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, RIGHT_PARENT, COMMA, CMP, COMMENT, SYMNAME, TYPE]
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    MUL   сдвиг, и переход в состояние 95
-    POW   сдвиг, и переход в состояние 96
-    DIV   сдвиг, и переход в состояние 97
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    EQV   сдвиг, и переход в состояние 102
-    NEQV  сдвиг, и переход в состояние 103
+    MUL   сдвиг, и переход в состояние 97
+    POW   сдвиг, и переход в состояние 98
+    DIV   сдвиг, и переход в состояние 99
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 81 (aexp)
 
@@ -3315,7 +3459,7 @@
     Conflict between rule 81 and token NEQV resolved as shift (MINUS < NEQV).
 
 
-Состояние 139
+Состояние 141
 
    77 aexp: aexp . POW aexp
    78     | aexp . MUL aexp
@@ -3323,19 +3467,19 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    POW   сдвиг, и переход в состояние 96
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    EQV   сдвиг, и переход в состояние 102
-    NEQV  сдвиг, и переход в состояние 103
+    POW   сдвиг, и переход в состояние 98
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 78 (aexp)
 
@@ -3352,7 +3496,7 @@
     Conflict between rule 78 and token NEQV resolved as shift (MUL < NEQV).
 
 
-Состояние 140
+Состояние 142
 
    77 aexp: aexp . POW aexp
    77     | aexp POW aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, DIV, RIGHT_PARENT, COMMA, CMP, COMMENT, SYMNAME, TYPE]
@@ -3360,19 +3504,19 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    POW   сдвиг, и переход в состояние 96
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    EQV   сдвиг, и переход в состояние 102
-    NEQV  сдвиг, и переход в состояние 103
+    POW   сдвиг, и переход в состояние 98
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 77 (aexp)
 
@@ -3389,7 +3533,7 @@
     Conflict between rule 77 and token NEQV resolved as shift (POW < NEQV).
 
 
-Состояние 141
+Состояние 143
 
    77 aexp: aexp . POW aexp
    78     | aexp . MUL aexp
@@ -3397,19 +3541,19 @@
    79     | aexp DIV aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, DIV, RIGHT_PARENT, COMMA, CMP, COMMENT, SYMNAME, TYPE]
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    POW   сдвиг, и переход в состояние 96
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    EQV   сдвиг, и переход в состояние 102
-    NEQV  сдвиг, и переход в состояние 103
+    POW   сдвиг, и переход в состояние 98
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    EQV   сдвиг, и переход в состояние 104
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 79 (aexp)
 
@@ -3426,83 +3570,6 @@
     Conflict between rule 79 and token NEQV resolved as shift (DIV < NEQV).
 
 
-Состояние 142
-
-   77 aexp: aexp . POW aexp
-   78     | aexp . MUL aexp
-   79     | aexp . DIV aexp
-   80     | aexp . ADD aexp
-   81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   83     | aexp CMP aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, RIGHT_PARENT, COMMA, COMMENT, SYMNAME, TYPE]
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
-
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
-
-    CMP  ошибка (неассоциативная)
-
-    $default  вывод с использованием правила 83 (aexp)
-
-    Conflict between rule 83 and token ADD resolved as shift (CMP < ADD).
-    Conflict between rule 83 and token MINUS resolved as shift (CMP < MINUS).
-    Conflict between rule 83 and token MUL resolved as shift (CMP < MUL).
-    Conflict between rule 83 and token POW resolved as shift (CMP < POW).
-    Conflict between rule 83 and token DIV resolved as shift (CMP < DIV).
-    Conflict between rule 83 and token CMP resolved as an error (%nonassoc CMP).
-    Conflict between rule 83 and token OR resolved as shift (CMP < OR).
-    Conflict between rule 83 and token XOR resolved as shift (CMP < XOR).
-    Conflict between rule 83 and token AND resolved as shift (CMP < AND).
-    Conflict between rule 83 and token EQV resolved as shift (CMP < EQV).
-    Conflict between rule 83 and token NEQV resolved as shift (CMP < NEQV).
-
-
-Состояние 143
-
-   77 aexp: aexp . POW aexp
-   78     | aexp . MUL aexp
-   79     | aexp . DIV aexp
-   80     | aexp . ADD aexp
-   81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   86     | aexp OR aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, EQV, COMMENT, SYMNAME, TYPE]
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
-
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    NEQV  сдвиг, и переход в состояние 103
-
-    $default  вывод с использованием правила 86 (aexp)
-
-    Conflict between rule 86 and token ADD resolved as reduce (ADD < OR).
-    Conflict between rule 86 and token MINUS resolved as reduce (MINUS < OR).
-    Conflict between rule 86 and token MUL resolved as reduce (MUL < OR).
-    Conflict between rule 86 and token POW resolved as reduce (POW < OR).
-    Conflict between rule 86 and token DIV resolved as reduce (DIV < OR).
-    Conflict between rule 86 and token CMP resolved as reduce (CMP < OR).
-    Conflict between rule 86 and token OR resolved as reduce (%left OR).
-    Conflict between rule 86 and token XOR resolved as shift (OR < XOR).
-    Conflict between rule 86 and token AND resolved as shift (OR < AND).
-    Conflict between rule 86 and token EQV resolved as reduce (EQV < OR).
-    Conflict between rule 86 and token NEQV resolved as shift (OR < NEQV).
-
-
 Состояние 144
 
    77 aexp: aexp . POW aexp
@@ -3510,30 +3577,40 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
-   88     | aexp XOR aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, EQV, COMMENT, SYMNAME, TYPE]
+   84     | aexp . CMP aexp
+   84     | aexp CMP aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, RIGHT_PARENT, COMMA, COMMENT, SYMNAME, TYPE]
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    AND   сдвиг, и переход в состояние 101
-    NEQV  сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
-    $default  вывод с использованием правила 88 (aexp)
+    CMP  ошибка (неассоциативная)
 
-    Conflict between rule 88 and token ADD resolved as reduce (ADD < XOR).
-    Conflict between rule 88 and token MINUS resolved as reduce (MINUS < XOR).
-    Conflict between rule 88 and token MUL resolved as reduce (MUL < XOR).
-    Conflict between rule 88 and token POW resolved as reduce (POW < XOR).
-    Conflict between rule 88 and token DIV resolved as reduce (DIV < XOR).
-    Conflict between rule 88 and token CMP resolved as reduce (CMP < XOR).
-    Conflict between rule 88 and token OR resolved as reduce (OR < XOR).
-    Conflict between rule 88 and token XOR resolved as reduce (%left XOR).
-    Conflict between rule 88 and token AND resolved as shift (XOR < AND).
-    Conflict between rule 88 and token EQV resolved as reduce (EQV < XOR).
-    Conflict between rule 88 and token NEQV resolved as shift (XOR < NEQV).
+    $default  вывод с использованием правила 84 (aexp)
+
+    Conflict between rule 84 and token ADD resolved as shift (CMP < ADD).
+    Conflict between rule 84 and token MINUS resolved as shift (CMP < MINUS).
+    Conflict between rule 84 and token MUL resolved as shift (CMP < MUL).
+    Conflict between rule 84 and token POW resolved as shift (CMP < POW).
+    Conflict between rule 84 and token DIV resolved as shift (CMP < DIV).
+    Conflict between rule 84 and token CMP resolved as an error (%nonassoc CMP).
+    Conflict between rule 84 and token OR resolved as shift (CMP < OR).
+    Conflict between rule 84 and token XOR resolved as shift (CMP < XOR).
+    Conflict between rule 84 and token AND resolved as shift (CMP < AND).
+    Conflict between rule 84 and token EQV resolved as shift (CMP < EQV).
+    Conflict between rule 84 and token NEQV resolved as shift (CMP < NEQV).
 
 
 Состояние 145
@@ -3543,29 +3620,31 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   87     | aexp AND aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, COMMENT, SYMNAME, TYPE]
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   87     | aexp OR aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, EQV, COMMENT, SYMNAME, TYPE]
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    NEQV  сдвиг, и переход в состояние 103
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    NEQV  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 87 (aexp)
 
-    Conflict between rule 87 and token ADD resolved as reduce (ADD < AND).
-    Conflict between rule 87 and token MINUS resolved as reduce (MINUS < AND).
-    Conflict between rule 87 and token MUL resolved as reduce (MUL < AND).
-    Conflict between rule 87 and token POW resolved as reduce (POW < AND).
-    Conflict between rule 87 and token DIV resolved as reduce (DIV < AND).
-    Conflict between rule 87 and token CMP resolved as reduce (CMP < AND).
-    Conflict between rule 87 and token OR resolved as reduce (OR < AND).
-    Conflict between rule 87 and token XOR resolved as reduce (XOR < AND).
-    Conflict between rule 87 and token AND resolved as reduce (%left AND).
-    Conflict between rule 87 and token EQV resolved as reduce (EQV < AND).
-    Conflict between rule 87 and token NEQV resolved as shift (AND < NEQV).
+    Conflict between rule 87 and token ADD resolved as reduce (ADD < OR).
+    Conflict between rule 87 and token MINUS resolved as reduce (MINUS < OR).
+    Conflict between rule 87 and token MUL resolved as reduce (MUL < OR).
+    Conflict between rule 87 and token POW resolved as reduce (POW < OR).
+    Conflict between rule 87 and token DIV resolved as reduce (DIV < OR).
+    Conflict between rule 87 and token CMP resolved as reduce (CMP < OR).
+    Conflict between rule 87 and token OR resolved as reduce (%left OR).
+    Conflict between rule 87 and token XOR resolved as shift (OR < XOR).
+    Conflict between rule 87 and token AND resolved as shift (OR < AND).
+    Conflict between rule 87 and token EQV resolved as reduce (EQV < OR).
+    Conflict between rule 87 and token NEQV resolved as shift (OR < NEQV).
 
 
 Состояние 146
@@ -3575,32 +3654,30 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   84     | aexp EQV aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, EQV, COMMENT, SYMNAME, TYPE]
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
+   89     | aexp XOR aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, EQV, COMMENT, SYMNAME, TYPE]
 
-    OR    сдвиг, и переход в состояние 99
-    XOR   сдвиг, и переход в состояние 100
-    AND   сдвиг, и переход в состояние 101
-    NEQV  сдвиг, и переход в состояние 103
+    AND   сдвиг, и переход в состояние 103
+    NEQV  сдвиг, и переход в состояние 105
 
-    $default  вывод с использованием правила 84 (aexp)
+    $default  вывод с использованием правила 89 (aexp)
 
-    Conflict between rule 84 and token ADD resolved as reduce (ADD < EQV).
-    Conflict between rule 84 and token MINUS resolved as reduce (MINUS < EQV).
-    Conflict between rule 84 and token MUL resolved as reduce (MUL < EQV).
-    Conflict between rule 84 and token POW resolved as reduce (POW < EQV).
-    Conflict between rule 84 and token DIV resolved as reduce (DIV < EQV).
-    Conflict between rule 84 and token CMP resolved as reduce (CMP < EQV).
-    Conflict between rule 84 and token OR resolved as shift (EQV < OR).
-    Conflict between rule 84 and token XOR resolved as shift (EQV < XOR).
-    Conflict between rule 84 and token AND resolved as shift (EQV < AND).
-    Conflict between rule 84 and token EQV resolved as reduce (%left EQV).
-    Conflict between rule 84 and token NEQV resolved as shift (EQV < NEQV).
+    Conflict between rule 89 and token ADD resolved as reduce (ADD < XOR).
+    Conflict between rule 89 and token MINUS resolved as reduce (MINUS < XOR).
+    Conflict between rule 89 and token MUL resolved as reduce (MUL < XOR).
+    Conflict between rule 89 and token POW resolved as reduce (POW < XOR).
+    Conflict between rule 89 and token DIV resolved as reduce (DIV < XOR).
+    Conflict between rule 89 and token CMP resolved as reduce (CMP < XOR).
+    Conflict between rule 89 and token OR resolved as reduce (OR < XOR).
+    Conflict between rule 89 and token XOR resolved as reduce (%left XOR).
+    Conflict between rule 89 and token AND resolved as shift (XOR < AND).
+    Conflict between rule 89 and token EQV resolved as reduce (EQV < XOR).
+    Conflict between rule 89 and token NEQV resolved as shift (XOR < NEQV).
 
 
 Состояние 147
@@ -3610,30 +3687,97 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   85     | aexp NEQV aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, NEQV, COMMENT, SYMNAME, TYPE]
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   88     | aexp AND aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, COMMENT, SYMNAME, TYPE]
+   89     | aexp . XOR aexp
 
-    $default  вывод с использованием правила 85 (aexp)
+    NEQV  сдвиг, и переход в состояние 105
 
-    Conflict between rule 85 and token ADD resolved as reduce (ADD < NEQV).
-    Conflict between rule 85 and token MINUS resolved as reduce (MINUS < NEQV).
-    Conflict between rule 85 and token MUL resolved as reduce (MUL < NEQV).
-    Conflict between rule 85 and token POW resolved as reduce (POW < NEQV).
-    Conflict between rule 85 and token DIV resolved as reduce (DIV < NEQV).
-    Conflict between rule 85 and token CMP resolved as reduce (CMP < NEQV).
-    Conflict between rule 85 and token OR resolved as reduce (OR < NEQV).
-    Conflict between rule 85 and token XOR resolved as reduce (XOR < NEQV).
-    Conflict between rule 85 and token AND resolved as reduce (AND < NEQV).
-    Conflict between rule 85 and token EQV resolved as reduce (EQV < NEQV).
-    Conflict between rule 85 and token NEQV resolved as reduce (%left NEQV).
+    $default  вывод с использованием правила 88 (aexp)
+
+    Conflict between rule 88 and token ADD resolved as reduce (ADD < AND).
+    Conflict between rule 88 and token MINUS resolved as reduce (MINUS < AND).
+    Conflict between rule 88 and token MUL resolved as reduce (MUL < AND).
+    Conflict between rule 88 and token POW resolved as reduce (POW < AND).
+    Conflict between rule 88 and token DIV resolved as reduce (DIV < AND).
+    Conflict between rule 88 and token CMP resolved as reduce (CMP < AND).
+    Conflict between rule 88 and token OR resolved as reduce (OR < AND).
+    Conflict between rule 88 and token XOR resolved as reduce (XOR < AND).
+    Conflict between rule 88 and token AND resolved as reduce (%left AND).
+    Conflict between rule 88 and token EQV resolved as reduce (EQV < AND).
+    Conflict between rule 88 and token NEQV resolved as shift (AND < NEQV).
 
 
 Состояние 148
+
+   77 aexp: aexp . POW aexp
+   78     | aexp . MUL aexp
+   79     | aexp . DIV aexp
+   80     | aexp . ADD aexp
+   81     | aexp . MINUS aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   85     | aexp EQV aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, EQV, COMMENT, SYMNAME, TYPE]
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
+
+    OR    сдвиг, и переход в состояние 101
+    XOR   сдвиг, и переход в состояние 102
+    AND   сдвиг, и переход в состояние 103
+    NEQV  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 85 (aexp)
+
+    Conflict between rule 85 and token ADD resolved as reduce (ADD < EQV).
+    Conflict between rule 85 and token MINUS resolved as reduce (MINUS < EQV).
+    Conflict between rule 85 and token MUL resolved as reduce (MUL < EQV).
+    Conflict between rule 85 and token POW resolved as reduce (POW < EQV).
+    Conflict between rule 85 and token DIV resolved as reduce (DIV < EQV).
+    Conflict between rule 85 and token CMP resolved as reduce (CMP < EQV).
+    Conflict between rule 85 and token OR resolved as shift (EQV < OR).
+    Conflict between rule 85 and token XOR resolved as shift (EQV < XOR).
+    Conflict between rule 85 and token AND resolved as shift (EQV < AND).
+    Conflict between rule 85 and token EQV resolved as reduce (%left EQV).
+    Conflict between rule 85 and token NEQV resolved as shift (EQV < NEQV).
+
+
+Состояние 149
+
+   77 aexp: aexp . POW aexp
+   78     | aexp . MUL aexp
+   79     | aexp . DIV aexp
+   80     | aexp . ADD aexp
+   81     | aexp . MINUS aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   86     | aexp NEQV aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, ADD, MINUS, MUL, POW, DIV, RIGHT_PARENT, COMMA, CMP, OR, XOR, AND, EQV, NEQV, COMMENT, SYMNAME, TYPE]
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
+
+    $default  вывод с использованием правила 86 (aexp)
+
+    Conflict between rule 86 and token ADD resolved as reduce (ADD < NEQV).
+    Conflict between rule 86 and token MINUS resolved as reduce (MINUS < NEQV).
+    Conflict between rule 86 and token MUL resolved as reduce (MUL < NEQV).
+    Conflict between rule 86 and token POW resolved as reduce (POW < NEQV).
+    Conflict between rule 86 and token DIV resolved as reduce (DIV < NEQV).
+    Conflict between rule 86 and token CMP resolved as reduce (CMP < NEQV).
+    Conflict between rule 86 and token OR resolved as reduce (OR < NEQV).
+    Conflict between rule 86 and token XOR resolved as reduce (XOR < NEQV).
+    Conflict between rule 86 and token AND resolved as reduce (AND < NEQV).
+    Conflict between rule 86 and token EQV resolved as reduce (EQV < NEQV).
+    Conflict between rule 86 and token NEQV resolved as reduce (%left NEQV).
+
+
+Состояние 150
 
    46 write_stmt: WRITE LEFT_PARENT format COMMA . format RIGHT_PARENT exp_list
    49 format: . MUL
@@ -3653,43 +3797,45 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    MUL          сдвиг, и переход в состояние 48
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    MUL          сдвиг, и переход в состояние 49
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    format   переход в состояние 166
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 56
+    format   переход в состояние 168
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 57
 
 
-Состояние 149
+Состояние 151
 
    41 io_stmt: OPEN LEFT_PARENT aexp COMMA . AFILE EQUAL aexp RIGHT_PARENT
 
-    AFILE  сдвиг, и переход в состояние 167
+    AFILE  сдвиг, и переход в состояние 169
 
 
-Состояние 150
+Состояние 152
 
    42 io_stmt: CLOSE LEFT_PARENT aexp RIGHT_PARENT .
 
     $default  вывод с использованием правила 42 (io_stmt)
 
 
-Состояние 151
+Состояние 153
 
    55 fn_def: SYMNAME LEFT_PARENT RIGHT_PARENT EQUAL . aexp
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -3707,37 +3853,39 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 168
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 170
 
 
-Состояние 152
+Состояние 154
 
    56 fn_def: SYMNAME LEFT_PARENT exp_list RIGHT_PARENT . EQUAL aexp
    65 fn_call: SYMNAME LEFT_PARENT exp_list RIGHT_PARENT .  [COMMENT]
 
-    EQUAL  сдвиг, и переход в состояние 169
+    EQUAL  сдвиг, и переход в состояние 171
 
     $default  вывод с использованием правила 65 (fn_call)
 
 
-Состояние 153
+Состояние 155
 
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
    65        | . SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
@@ -3755,34 +3903,36 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 170
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 172
 
 
-Состояние 154
+Состояние 156
 
     1 program: program_head program_body program_end END_OF_FILE .
 
     $default  вывод с использованием правила 1 (program)
 
 
-Состояние 155
+Состояние 157
 
    57 fn_def: type FUNCTION SYMNAME LEFT_PARENT . RIGHT_PARENT stmts END
    59       | type FUNCTION SYMNAME LEFT_PARENT . exp_list RIGHT_PARENT stmts END
@@ -3803,29 +3953,31 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL          сдвиг, и переход в состояние 5
-    MINUS         сдвиг, и переход в состояние 47
-    LEFT_PARENT   сдвиг, и переход в состояние 58
-    RIGHT_PARENT  сдвиг, и переход в состояние 171
-    NOT           сдвиг, и переход в состояние 50
-    SYMNAME       сдвиг, и переход в состояние 51
-    CHARS         сдвиг, и переход в состояние 52
-    NUMBER        сдвиг, и переход в состояние 53
+    ADD           сдвиг, и переход в состояние 47
+    MINUS         сдвиг, и переход в состояние 48
+    LEFT_PARENT   сдвиг, и переход в состояние 59
+    RIGHT_PARENT  сдвиг, и переход в состояние 173
+    NOT           сдвиг, и переход в состояние 51
+    SYMNAME       сдвиг, и переход в состояние 52
+    CHARS         сдвиг, и переход в состояние 53
+    NUMBER        сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 172
-    aexp      переход в состояние 111
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 174
+    aexp      переход в состояние 113
 
 
-Состояние 156
+Состояние 158
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -3883,7 +4035,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 173
+    END         сдвиг, и переход в состояние 175
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -3900,12 +4052,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -3914,14 +4066,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 157
+Состояние 159
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -3930,10 +4082,10 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 174
+    stmts  переход в состояние 176
 
 
-Состояние 158
+Состояние 160
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -3991,7 +4143,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 175
+    END         сдвиг, и переход в состояние 177
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -4008,12 +4160,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -4022,14 +4174,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 159
+Состояние 161
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -4038,17 +4190,17 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 176
+    stmts  переход в состояние 178
 
 
-Состояние 160
+Состояние 162
 
    67 fn_call: CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT .
 
     $default  вывод с использованием правила 67 (fn_call)
 
 
-Состояние 161
+Состояние 163
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -4060,17 +4212,17 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 177
+    stmts  переход в состояние 179
 
 
-Состояние 162
+Состояние 164
 
    37 do_stmt: DO WHILE aexp stmts ENDDO .
 
     $default  вывод с использованием правила 37 (do_stmt)
 
 
-Состояние 163
+Состояние 165
 
    35 do_stmt: DO SYMNAME EQUAL aexp COMMA . aexp stmts ENDDO
    36        | DO SYMNAME EQUAL aexp COMMA . aexp COMMA aexp stmts ENDDO
@@ -4089,55 +4241,57 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 178
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 180
 
 
-Состояние 164
+Состояние 166
 
    44 read_stmt: READ LEFT_PARENT format COMMA format . RIGHT_PARENT aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 179
+    RIGHT_PARENT  сдвиг, и переход в состояние 181
 
 
-Состояние 165
+Состояние 167
 
    65 fn_call: SYMNAME LEFT_PARENT exp_list RIGHT_PARENT .
 
     $default  вывод с использованием правила 65 (fn_call)
 
 
-Состояние 166
+Состояние 168
 
    46 write_stmt: WRITE LEFT_PARENT format COMMA format . RIGHT_PARENT exp_list
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 180
+    RIGHT_PARENT  сдвиг, и переход в состояние 182
 
 
-Состояние 167
+Состояние 169
 
    41 io_stmt: OPEN LEFT_PARENT aexp COMMA AFILE . EQUAL aexp RIGHT_PARENT
 
-    EQUAL  сдвиг, и переход в состояние 181
+    EQUAL  сдвиг, и переход в состояние 183
 
 
-Состояние 168
+Состояние 170
 
    55 fn_def: SYMNAME LEFT_PARENT RIGHT_PARENT EQUAL aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, COMMENT, SYMNAME, TYPE]
    77 aexp: aexp . POW aexp
@@ -4145,29 +4299,29 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 55 (fn_def)
 
 
-Состояние 169
+Состояние 171
 
    56 fn_def: SYMNAME LEFT_PARENT exp_list RIGHT_PARENT EQUAL . aexp
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -4185,27 +4339,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 182
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 184
 
 
-Состояние 170
+Состояние 172
 
    69 exp_list: exp_list COMMA aexp .  [RIGHT_PARENT, COMMA, COMMENT]
    77 aexp: aexp . POW aexp
@@ -4213,29 +4369,29 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 69 (exp_list)
 
 
-Состояние 171
+Состояние 173
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -4244,26 +4400,26 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 183
+    stmts  переход в состояние 185
 
 
-Состояние 172
+Состояние 174
 
    59 fn_def: type FUNCTION SYMNAME LEFT_PARENT exp_list . RIGHT_PARENT stmts END
    69 exp_list: exp_list . COMMA aexp
 
-    RIGHT_PARENT  сдвиг, и переход в состояние 184
-    COMMA         сдвиг, и переход в состояние 153
+    RIGHT_PARENT  сдвиг, и переход в состояние 186
+    COMMA         сдвиг, и переход в состояние 155
 
 
-Состояние 173
+Состояние 175
 
    58 fn_def: FUNCTION SYMNAME LEFT_PARENT RIGHT_PARENT stmts END .
 
     $default  вывод с использованием правила 58 (fn_def)
 
 
-Состояние 174
+Состояние 176
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -4321,7 +4477,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 185
+    END         сдвиг, и переход в состояние 187
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -4338,12 +4494,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -4352,21 +4508,21 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 175
+Состояние 177
 
    62 fn_def: SUBROUTINE SYMNAME LEFT_PARENT RIGHT_PARENT stmts END .
 
     $default  вывод с использованием правила 62 (fn_def)
 
 
-Состояние 176
+Состояние 178
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -4424,7 +4580,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 186
+    END         сдвиг, и переход в состояние 188
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -4441,12 +4597,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -4455,14 +4611,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 177
+Состояние 179
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -4533,9 +4689,9 @@
     STOP        сдвиг, и переход в состояние 7
     PAUSE       сдвиг, и переход в состояние 8
     IF          сдвиг, и переход в состояние 9
-    ELSE        сдвиг, и переход в состояние 187
-    ELSEIF      сдвиг, и переход в состояние 188
-    ENDIF       сдвиг, и переход в состояние 189
+    ELSE        сдвиг, и переход в состояние 189
+    ELSEIF      сдвиг, и переход в состояние 190
+    ENDIF       сдвиг, и переход в состояние 191
     DO          сдвиг, и переход в состояние 10
     BREAK       сдвиг, и переход в состояние 11
     CONTINUE    сдвиг, и переход в состояние 12
@@ -4544,29 +4700,29 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
-    elseif_stmt   переход в состояние 190
+    elseif_stmt   переход в состояние 192
     do_stmt       переход в состояние 28
     io_stmt       переход в состояние 29
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 178
+Состояние 180
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -4578,31 +4734,31 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD      сдвиг, и переход в состояние 93
-    MINUS    сдвиг, и переход в состояние 94
-    MUL      сдвиг, и переход в состояние 95
-    POW      сдвиг, и переход в состояние 96
-    DIV      сдвиг, и переход в состояние 97
-    COMMA    сдвиг, и переход в состояние 191
-    CMP      сдвиг, и переход в состояние 98
-    OR       сдвиг, и переход в состояние 99
-    XOR      сдвиг, и переход в состояние 100
-    AND      сдвиг, и переход в состояние 101
-    EQV      сдвиг, и переход в состояние 102
-    NEQV     сдвиг, и переход в состояние 103
+    ADD      сдвиг, и переход в состояние 95
+    MINUS    сдвиг, и переход в состояние 96
+    MUL      сдвиг, и переход в состояние 97
+    POW      сдвиг, и переход в состояние 98
+    DIV      сдвиг, и переход в состояние 99
+    COMMA    сдвиг, и переход в состояние 193
+    CMP      сдвиг, и переход в состояние 100
+    OR       сдвиг, и переход в состояние 101
+    XOR      сдвиг, и переход в состояние 102
+    AND      сдвиг, и переход в состояние 103
+    EQV      сдвиг, и переход в состояние 104
+    NEQV     сдвиг, и переход в состояние 105
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 192
+    stmts  переход в состояние 194
 
 
-Состояние 179
+Состояние 181
 
    44 read_stmt: READ LEFT_PARENT format COMMA format RIGHT_PARENT . aexp
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -4620,27 +4776,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 193
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 195
 
 
-Состояние 180
+Состояние 182
 
    46 write_stmt: WRITE LEFT_PARENT format COMMA format RIGHT_PARENT . exp_list
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -4660,28 +4818,30 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call   переход в состояние 55
-    exp_list  переход в состояние 194
-    aexp      переход в состояние 111
+    fn_call   переход в состояние 56
+    exp_list  переход в состояние 196
+    aexp      переход в состояние 113
 
 
-Состояние 181
+Состояние 183
 
    41 io_stmt: OPEN LEFT_PARENT aexp COMMA AFILE EQUAL . aexp RIGHT_PARENT
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -4699,27 +4859,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 195
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 197
 
 
-Состояние 182
+Состояние 184
 
    56 fn_def: SYMNAME LEFT_PARENT exp_list RIGHT_PARENT EQUAL aexp .  [PROGRAM, FUNCTION, SUBROUTINE, RETURN, CALL, GOTO, STOP, PAUSE, IF, DO, BREAK, CONTINUE, READ, WRITE, PRINT, OPEN, CLOSE, COMMENT, SYMNAME, TYPE]
    77 aexp: aexp . POW aexp
@@ -4727,29 +4889,29 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 56 (fn_def)
 
 
-Состояние 183
+Состояние 185
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -4807,7 +4969,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 196
+    END         сдвиг, и переход в состояние 198
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -4824,12 +4986,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -4838,14 +5000,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 184
+Состояние 186
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -4854,24 +5016,24 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 197
+    stmts  переход в состояние 199
 
 
-Состояние 185
+Состояние 187
 
    60 fn_def: FUNCTION SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END .
 
     $default  вывод с использованием правила 60 (fn_def)
 
 
-Состояние 186
+Состояние 188
 
    63 fn_def: SUBROUTINE SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END .
 
     $default  вывод с использованием правила 63 (fn_def)
 
 
-Состояние 187
+Состояние 189
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -4880,35 +5042,35 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 198
+    stmts  переход в состояние 200
 
 
-Состояние 188
+Состояние 190
 
    33 elseif_stmt: ELSEIF . LEFT_PARENT aexp RIGHT_PARENT THEN stmts
 
-    LEFT_PARENT  сдвиг, и переход в состояние 199
+    LEFT_PARENT  сдвиг, и переход в состояние 201
 
 
-Состояние 189
+Состояние 191
 
    29 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts ENDIF .
 
     $default  вывод с использованием правила 29 (if_stmt)
 
 
-Состояние 190
+Состояние 192
 
    31 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts elseif_stmt . ELSE stmts ENDIF
    32        | IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts elseif_stmt . ENDIF
    34 elseif_stmt: elseif_stmt . ELSEIF LEFT_PARENT aexp RIGHT_PARENT THEN stmts
 
-    ELSE    сдвиг, и переход в состояние 200
-    ELSEIF  сдвиг, и переход в состояние 201
-    ENDIF   сдвиг, и переход в состояние 202
+    ELSE    сдвиг, и переход в состояние 202
+    ELSEIF  сдвиг, и переход в состояние 203
+    ENDIF   сдвиг, и переход в состояние 204
 
 
-Состояние 191
+Состояние 193
 
    36 do_stmt: DO SYMNAME EQUAL aexp COMMA aexp COMMA . aexp stmts ENDDO
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -4926,27 +5088,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 203
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 205
 
 
-Состояние 192
+Состояние 194
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5015,18 +5179,18 @@
     DO          сдвиг, и переход в состояние 10
     BREAK       сдвиг, и переход в состояние 11
     CONTINUE    сдвиг, и переход в состояние 12
-    ENDDO       сдвиг, и переход в состояние 204
+    ENDDO       сдвиг, и переход в состояние 206
     READ        сдвиг, и переход в состояние 13
     WRITE       сдвиг, и переход в состояние 14
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5035,14 +5199,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 193
+Состояние 195
 
    44 read_stmt: READ LEFT_PARENT format COMMA format RIGHT_PARENT aexp .  [COMMA, COMMENT]
    77 aexp: aexp . POW aexp
@@ -5050,39 +5214,39 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD    сдвиг, и переход в состояние 93
-    MINUS  сдвиг, и переход в состояние 94
-    MUL    сдвиг, и переход в состояние 95
-    POW    сдвиг, и переход в состояние 96
-    DIV    сдвиг, и переход в состояние 97
-    CMP    сдвиг, и переход в состояние 98
-    OR     сдвиг, и переход в состояние 99
-    XOR    сдвиг, и переход в состояние 100
-    AND    сдвиг, и переход в состояние 101
-    EQV    сдвиг, и переход в состояние 102
-    NEQV   сдвиг, и переход в состояние 103
+    ADD    сдвиг, и переход в состояние 95
+    MINUS  сдвиг, и переход в состояние 96
+    MUL    сдвиг, и переход в состояние 97
+    POW    сдвиг, и переход в состояние 98
+    DIV    сдвиг, и переход в состояние 99
+    CMP    сдвиг, и переход в состояние 100
+    OR     сдвиг, и переход в состояние 101
+    XOR    сдвиг, и переход в состояние 102
+    AND    сдвиг, и переход в состояние 103
+    EQV    сдвиг, и переход в состояние 104
+    NEQV   сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 44 (read_stmt)
 
 
-Состояние 194
+Состояние 196
 
    46 write_stmt: WRITE LEFT_PARENT format COMMA format RIGHT_PARENT exp_list .  [COMMENT]
    69 exp_list: exp_list . COMMA aexp
 
-    COMMA  сдвиг, и переход в состояние 153
+    COMMA  сдвиг, и переход в состояние 155
 
     $default  вывод с использованием правила 46 (write_stmt)
 
 
-Состояние 195
+Состояние 197
 
    41 io_stmt: OPEN LEFT_PARENT aexp COMMA AFILE EQUAL aexp . RIGHT_PARENT
    77 aexp: aexp . POW aexp
@@ -5090,35 +5254,35 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 205
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 207
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
 
-Состояние 196
+Состояние 198
 
    57 fn_def: type FUNCTION SYMNAME LEFT_PARENT RIGHT_PARENT stmts END .
 
     $default  вывод с использованием правила 57 (fn_def)
 
 
-Состояние 197
+Состояние 199
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5176,7 +5340,7 @@
    70 type: . TYPE
    71     | . TYPE MUL NUMBER
 
-    END         сдвиг, и переход в состояние 206
+    END         сдвиг, и переход в состояние 208
     FUNCTION    сдвиг, и переход в состояние 2
     SUBROUTINE  сдвиг, и переход в состояние 3
     RETURN      сдвиг, и переход в состояние 4
@@ -5193,12 +5357,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5207,14 +5371,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 198
+Состояние 200
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5280,7 +5444,7 @@
     STOP        сдвиг, и переход в состояние 7
     PAUSE       сдвиг, и переход в состояние 8
     IF          сдвиг, и переход в состояние 9
-    ENDIF       сдвиг, и переход в состояние 207
+    ENDIF       сдвиг, и переход в состояние 209
     DO          сдвиг, и переход в состояние 10
     BREAK       сдвиг, и переход в состояние 11
     CONTINUE    сдвиг, и переход в состояние 12
@@ -5289,12 +5453,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5303,14 +5467,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 199
+Состояние 201
 
    33 elseif_stmt: ELSEIF LEFT_PARENT . aexp RIGHT_PARENT THEN stmts
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -5328,27 +5492,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 208
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 210
 
 
-Состояние 200
+Состояние 202
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -5357,24 +5523,24 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 209
+    stmts  переход в состояние 211
 
 
-Состояние 201
+Состояние 203
 
    34 elseif_stmt: elseif_stmt ELSEIF . LEFT_PARENT aexp RIGHT_PARENT THEN stmts
 
-    LEFT_PARENT  сдвиг, и переход в состояние 210
+    LEFT_PARENT  сдвиг, и переход в состояние 212
 
 
-Состояние 202
+Состояние 204
 
    32 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts elseif_stmt ENDIF .
 
     $default  вывод с использованием правила 32 (if_stmt)
 
 
-Состояние 203
+Состояние 205
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -5385,58 +5551,58 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD      сдвиг, и переход в состояние 93
-    MINUS    сдвиг, и переход в состояние 94
-    MUL      сдвиг, и переход в состояние 95
-    POW      сдвиг, и переход в состояние 96
-    DIV      сдвиг, и переход в состояние 97
-    CMP      сдвиг, и переход в состояние 98
-    OR       сдвиг, и переход в состояние 99
-    XOR      сдвиг, и переход в состояние 100
-    AND      сдвиг, и переход в состояние 101
-    EQV      сдвиг, и переход в состояние 102
-    NEQV     сдвиг, и переход в состояние 103
+    ADD      сдвиг, и переход в состояние 95
+    MINUS    сдвиг, и переход в состояние 96
+    MUL      сдвиг, и переход в состояние 97
+    POW      сдвиг, и переход в состояние 98
+    DIV      сдвиг, и переход в состояние 99
+    CMP      сдвиг, и переход в состояние 100
+    OR       сдвиг, и переход в состояние 101
+    XOR      сдвиг, и переход в состояние 102
+    AND      сдвиг, и переход в состояние 103
+    EQV      сдвиг, и переход в состояние 104
+    NEQV     сдвиг, и переход в состояние 105
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 211
+    stmts  переход в состояние 213
 
 
-Состояние 204
+Состояние 206
 
    35 do_stmt: DO SYMNAME EQUAL aexp COMMA aexp stmts ENDDO .
 
     $default  вывод с использованием правила 35 (do_stmt)
 
 
-Состояние 205
+Состояние 207
 
    41 io_stmt: OPEN LEFT_PARENT aexp COMMA AFILE EQUAL aexp RIGHT_PARENT .
 
     $default  вывод с использованием правила 41 (io_stmt)
 
 
-Состояние 206
+Состояние 208
 
    59 fn_def: type FUNCTION SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END .
 
     $default  вывод с использованием правила 59 (fn_def)
 
 
-Состояние 207
+Состояние 209
 
    30 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts ELSE stmts ENDIF .
 
     $default  вывод с использованием правила 30 (if_stmt)
 
 
-Состояние 208
+Состояние 210
 
    33 elseif_stmt: ELSEIF LEFT_PARENT aexp . RIGHT_PARENT THEN stmts
    77 aexp: aexp . POW aexp
@@ -5444,28 +5610,28 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 212
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 214
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
 
-Состояние 209
+Состояние 211
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5531,7 +5697,7 @@
     STOP        сдвиг, и переход в состояние 7
     PAUSE       сдвиг, и переход в состояние 8
     IF          сдвиг, и переход в состояние 9
-    ENDIF       сдвиг, и переход в состояние 213
+    ENDIF       сдвиг, и переход в состояние 215
     DO          сдвиг, и переход в состояние 10
     BREAK       сдвиг, и переход в состояние 11
     CONTINUE    сдвиг, и переход в состояние 12
@@ -5540,12 +5706,12 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5554,14 +5720,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 210
+Состояние 212
 
    34 elseif_stmt: elseif_stmt ELSEIF LEFT_PARENT . aexp RIGHT_PARENT THEN stmts
    64 fn_call: . SYMNAME LEFT_PARENT RIGHT_PARENT
@@ -5579,27 +5745,29 @@
    80     | . aexp ADD aexp
    81     | . aexp MINUS aexp
    82     | . MINUS aexp
-   83     | . aexp CMP aexp
-   84     | . aexp EQV aexp
-   85     | . aexp NEQV aexp
-   86     | . aexp OR aexp
-   87     | . aexp AND aexp
-   88     | . aexp XOR aexp
-   89     | . NOT aexp
+   83     | . ADD aexp
+   84     | . aexp CMP aexp
+   85     | . aexp EQV aexp
+   86     | . aexp NEQV aexp
+   87     | . aexp OR aexp
+   88     | . aexp AND aexp
+   89     | . aexp XOR aexp
+   90     | . NOT aexp
 
     CALL         сдвиг, и переход в состояние 5
-    MINUS        сдвиг, и переход в состояние 47
-    LEFT_PARENT  сдвиг, и переход в состояние 58
-    NOT          сдвиг, и переход в состояние 50
-    SYMNAME      сдвиг, и переход в состояние 51
-    CHARS        сдвиг, и переход в состояние 52
-    NUMBER       сдвиг, и переход в состояние 53
+    ADD          сдвиг, и переход в состояние 47
+    MINUS        сдвиг, и переход в состояние 48
+    LEFT_PARENT  сдвиг, и переход в состояние 59
+    NOT          сдвиг, и переход в состояние 51
+    SYMNAME      сдвиг, и переход в состояние 52
+    CHARS        сдвиг, и переход в состояние 53
+    NUMBER       сдвиг, и переход в состояние 54
 
-    fn_call  переход в состояние 55
-    aexp     переход в состояние 214
+    fn_call  переход в состояние 56
+    aexp     переход в состояние 216
 
 
-Состояние 211
+Состояние 213
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5668,18 +5836,18 @@
     DO          сдвиг, и переход в состояние 10
     BREAK       сдвиг, и переход в состояние 11
     CONTINUE    сдвиг, и переход в состояние 12
-    ENDDO       сдвиг, и переход в состояние 215
+    ENDDO       сдвиг, и переход в состояние 217
     READ        сдвиг, и переход в состояние 13
     WRITE       сдвиг, и переход в состояние 14
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5688,28 +5856,28 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 212
+Состояние 214
 
    33 elseif_stmt: ELSEIF LEFT_PARENT aexp RIGHT_PARENT . THEN stmts
 
-    THEN  сдвиг, и переход в состояние 216
+    THEN  сдвиг, и переход в состояние 218
 
 
-Состояние 213
+Состояние 215
 
    31 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts elseif_stmt ELSE stmts ENDIF .
 
     $default  вывод с использованием правила 31 (if_stmt)
 
 
-Состояние 214
+Состояние 216
 
    34 elseif_stmt: elseif_stmt ELSEIF LEFT_PARENT aexp . RIGHT_PARENT THEN stmts
    77 aexp: aexp . POW aexp
@@ -5717,35 +5885,35 @@
    79     | aexp . DIV aexp
    80     | aexp . ADD aexp
    81     | aexp . MINUS aexp
-   83     | aexp . CMP aexp
-   84     | aexp . EQV aexp
-   85     | aexp . NEQV aexp
-   86     | aexp . OR aexp
-   87     | aexp . AND aexp
-   88     | aexp . XOR aexp
+   84     | aexp . CMP aexp
+   85     | aexp . EQV aexp
+   86     | aexp . NEQV aexp
+   87     | aexp . OR aexp
+   88     | aexp . AND aexp
+   89     | aexp . XOR aexp
 
-    ADD           сдвиг, и переход в состояние 93
-    MINUS         сдвиг, и переход в состояние 94
-    MUL           сдвиг, и переход в состояние 95
-    POW           сдвиг, и переход в состояние 96
-    DIV           сдвиг, и переход в состояние 97
-    RIGHT_PARENT  сдвиг, и переход в состояние 217
-    CMP           сдвиг, и переход в состояние 98
-    OR            сдвиг, и переход в состояние 99
-    XOR           сдвиг, и переход в состояние 100
-    AND           сдвиг, и переход в состояние 101
-    EQV           сдвиг, и переход в состояние 102
-    NEQV          сдвиг, и переход в состояние 103
+    ADD           сдвиг, и переход в состояние 95
+    MINUS         сдвиг, и переход в состояние 96
+    MUL           сдвиг, и переход в состояние 97
+    POW           сдвиг, и переход в состояние 98
+    DIV           сдвиг, и переход в состояние 99
+    RIGHT_PARENT  сдвиг, и переход в состояние 219
+    CMP           сдвиг, и переход в состояние 100
+    OR            сдвиг, и переход в состояние 101
+    XOR           сдвиг, и переход в состояние 102
+    AND           сдвиг, и переход в состояние 103
+    EQV           сдвиг, и переход в состояние 104
+    NEQV          сдвиг, и переход в состояние 105
 
 
-Состояние 215
+Состояние 217
 
    36 do_stmt: DO SYMNAME EQUAL aexp COMMA aexp COMMA aexp stmts ENDDO .
 
     $default  вывод с использованием правила 36 (do_stmt)
 
 
-Состояние 216
+Состояние 218
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -5754,17 +5922,17 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 218
+    stmts  переход в состояние 220
 
 
-Состояние 217
+Состояние 219
 
    34 elseif_stmt: elseif_stmt ELSEIF LEFT_PARENT aexp RIGHT_PARENT . THEN stmts
 
-    THEN  сдвиг, и переход в состояние 219
+    THEN  сдвиг, и переход в состояние 221
 
 
-Состояние 218
+Состояние 220
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5838,14 +6006,14 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
     $default  вывод с использованием правила 33 (elseif_stmt)
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5854,14 +6022,14 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36
     type          переход в состояние 37
 
 
-Состояние 219
+Состояние 221
 
    11 stmts: . COMMENT
    12      | . stmts COMMENT
@@ -5870,10 +6038,10 @@
 
     COMMENT  сдвиг, и переход в состояние 38
 
-    stmts  переход в состояние 220
+    stmts  переход в состояние 222
 
 
-Состояние 220
+Состояние 222
 
    12 stmts: stmts . COMMENT
    13      | stmts . stmt
@@ -5947,14 +6115,14 @@
     PRINT       сдвиг, и переход в состояние 15
     OPEN        сдвиг, и переход в состояние 16
     CLOSE       сдвиг, и переход в состояние 17
-    COMMENT     сдвиг, и переход в состояние 77
+    COMMENT     сдвиг, и переход в состояние 78
     SYMNAME     сдвиг, и переход в состояние 19
     TYPE        сдвиг, и переход в состояние 20
 
     $default  вывод с использованием правила 34 (elseif_stmt)
 
-    stmt          переход в состояние 78
-    exec_stmt     переход в состояние 79
+    stmt          переход в состояние 79
+    exec_stmt     переход в состояние 80
     assign_stmt   переход в состояние 25
     control_stmt  переход в состояние 26
     if_stmt       переход в состояние 27
@@ -5963,7 +6131,7 @@
     read_stmt     переход в состояние 30
     write_stmt    переход в состояние 31
     print_stmt    переход в состояние 32
-    nonexec_stmt  переход в состояние 80
+    nonexec_stmt  переход в состояние 81
     var_def       переход в состояние 34
     fn_def        переход в состояние 35
     fn_call       переход в состояние 36

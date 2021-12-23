@@ -1,5 +1,6 @@
       real function icount(ifirst, isecond)
       real ifirst, isecond
+      x = 12 + "asds"
       ifirst = ifirst + isecond
       icount = ifirst ** isecond
       end
@@ -19,6 +20,7 @@
                     enddo
               endif
             print *, "end"
+            pause 10
         endif
       enddo
       end
@@ -30,6 +32,7 @@ c
       Program name
       integer nmax, n
       real x, y, z
+      complex r
       nmax = 1000
 c Open the data file
       open (20, file='points.dat')
@@ -40,7 +43,11 @@ c Read the number of points
       endif
       do i= 1, n, (5*n + 48)
         read(20,*) x, y, z
+        do while (1.le.2)
+            print *, "123" + 11
+        enddo
       enddo
+      f = a ** b + a / b
 c Close the file
       close (20)
 c Now we can process the data somehow...

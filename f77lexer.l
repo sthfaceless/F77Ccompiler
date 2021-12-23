@@ -19,8 +19,8 @@ exp ((e|d)(\+|\-)?[0-9]{1,3})
 	}
 }
 	/* comments, empty string and newline */
-(("c"(" ".*)?)|" "*)\n {yylval._str = string(strdup(yytext));return COMMENT;}
-<STMT>(((\*|!)(" ".*)?)|" "*)\n {BEGIN(INITIAL);yylval._str = string(strdup(yytext));return COMMENT;}
+((("c"|\*)(" ".*)?)|" "*)\n {yylval._str = string(strdup(yytext));return COMMENT;}
+<STMT>((!(" ".*)?)|" "*)\n {BEGIN(INITIAL);yylval._str = string(strdup(yytext));return COMMENT;}
 <STMT>[ \t] {}
 <STMT>"integer" |
 <STMT>"byte" |
@@ -30,22 +30,6 @@ exp ((e|d)(\+|\-)?[0-9]{1,3})
 <STMT>"double complex" |
 <STMT>"logical" |
 <STMT>"character" {yylval._type = parse_type(yytext);return TYPE;}
-	/* numerical constants */
-<STMT>(\+|\-)?[0-9]+{exp}? {yylval._constant = new constant_node(new complex_type(integer), replace_all(string(strdup(yytext)), "d", "e")); return NUMBER;}
-<STMT>(\+|\-)?[0-9]+(\.[0-9]+){exp}? {yylval._constant = new constant_node(new complex_type(real), replace_all(string(strdup(yytext)), "d", "e")); return NUMBER;}
-<STMT>b"'"(0|1)+"'" {yylval._constant = new constant_node(new complex_type(integer), binary_string_to_int(substring(string(strdup(yytext)), 2, -2))); return NUMBER;}
-<STMT>o[0-8]+ {yylval._constant = new constant_node(new complex_type(integer), "0" + substring(string(strdup(yytext)), 1, -1)); return NUMBER;}
-<STMT>o"'"[0-8]+"'" {yylval._constant = new constant_node(new complex_type(integer),"0" + substring(string(strdup(yytext)), 2, -2)); return NUMBER;}
-<STMT>"'"[0-8]+"'"oa {yylval._constant = new constant_node(new complex_type(integer), "0" + substring(string(strdup(yytext)), 1, -4)); return NUMBER;}
-<STMT>\$[0-9a-f]+ {yylval._constant = new constant_node(new complex_type(integer),"0x" + substring(string(strdup(yytext)), 1, -1)); return NUMBER;}
-<STMT>x"'"[0-9a-f]+"'" {yylval._constant = new constant_node(new complex_type(integer), "0x" + substring(string(strdup(yytext)), 2, -2)); return NUMBER;}
-<STMT>"'"[0-9a-f]+"'"xa {yylval._constant = new constant_node(new complex_type(integer), "0x" + substring(string(strdup(yytext)), 1, -4)); return NUMBER;}
-<STMT>z"'"[0-9a-f]+"'" {yylval._constant = new constant_node(new complex_type(integer),"0x" + substring(string(strdup(yytext)), 2, -2)); return NUMBER;}
-<STMT>"'"[0-9a-f]+"'"za {yylval._constant = new constant_node(new complex_type(integer), "0x" + substring(string(strdup(yytext)), 1, -4)); return NUMBER;}
-<STMT>(".true."|".false.") {yylval._constant = new constant_node(new complex_type(boolean), parse_bool(yytext));return NUMBER;}
-	/* describe string*/
-<STMT>"'"(\\.|''|[^'])*"'" {yylval._constant = new constant_node(new complex_type(chars), "\"" + replace_all(substring(string(strdup(yytext)), 1, -2), "''", "'") + "\"");return CHARS;}
-<STMT>"\""(\\.|\\\"|[^"])*"\"" {yylval._constant = new constant_node(new complex_type(chars), "\"" + substring(string(strdup(yytext)), 1, -2) + "\"" );return CHARS;}
 	/* operators */
 <STMT>"+" {return ADD;}
 <STMT>"-" {return MINUS;}
@@ -57,6 +41,22 @@ exp ((e|d)(\+|\-)?[0-9]{1,3})
 <STMT>"=" {return EQUAL;}
 <STMT>"," {return COMMA;}
 <STMT>":" {return COLON;}
+	/* numerical constants */
+<STMT>[0-9]+{exp}? {yylval._constant = new constant_node(new complex_type(integer), replace_all(string(strdup(yytext)), "d", "e")); return NUMBER;}
+<STMT>[0-9]+(\.[0-9]+){exp}? {yylval._constant = new constant_node(new complex_type(real), replace_all(string(strdup(yytext)), "d", "e")); return NUMBER;}
+<STMT>b"'"(0|1)+"'" {yylval._constant = new constant_node(new complex_type(integer), binary_string_to_int(substring(string(strdup(yytext)), 2, -2))); return NUMBER;}
+<STMT>o[0-8]+ {yylval._constant = new constant_node(new complex_type(integer), "0" + substring(string(strdup(yytext)), 1, -1)); return NUMBER;}
+<STMT>o"'"[0-8]+"'" {yylval._constant = new constant_node(new complex_type(integer),"0" + substring(string(strdup(yytext)), 2, -2)); return NUMBER;}
+<STMT>"'"[0-8]+"'"oa {yylval._constant = new constant_node(new complex_type(integer), "0" + substring(string(strdup(yytext)), 1, -4)); return NUMBER;}
+<STMT>\$[0-9a-f]+ {yylval._constant = new constant_node(new complex_type(integer),"0x" + substring(string(strdup(yytext)), 1, -1)); return NUMBER;}
+<STMT>x"'"[0-9a-f]+"'" {yylval._constant = new constant_node(new complex_type(integer), "0x" + substring(string(strdup(yytext)), 2, -2)); return NUMBER;}
+<STMT>"'"[0-9a-f]+"'"xa {yylval._constant = new constant_node(new complex_type(integer), "0x" + substring(string(strdup(yytext)), 1, -4)); return NUMBER;}
+<STMT>z"'"[0-9a-f]+"'" {yylval._constant = new constant_node(new complex_type(integer),"0x" + substring(string(strdup(yytext)), 2, -2)); return NUMBER;}
+<STMT>"'"[0-9a-f]+"'"za {yylval._constant = new constant_node(new complex_type(integer), "0x" + substring(string(strdup(yytext)), 1, -4)); return NUMBER;}
+<STMT>(".true."|".false.") {yylval._constant = new constant_node(new complex_type(boolean), parse_bool(yytext));return NUMBER;}
+	/* describe string*/
+<STMT>"'"(\\.|''|[^'])*"'" {yylval._constant = new constant_node(new complex_type(chars), "\"" + replace_all(replace_all(substring(string(strdup(yytext)), 1, -2), "\\", "\\\\"), "''", "'") + "\"");return CHARS;}
+<STMT>"\""(\\.|\"\"|[^"])*"\"" {yylval._constant = new constant_node(new complex_type(chars), "\"" + replace_all(replace_all(substring(string(strdup(yytext)), 1, -2), "\\", "\\\\"), "\"\"", "\\\"") + "\"" );return CHARS;}
 	/* comparison operators */
 <STMT>".eq." {yylval._str = "==";return CMP;}
 <STMT>".ne." {yylval._str = "!=";return CMP;}

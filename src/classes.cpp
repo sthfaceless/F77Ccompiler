@@ -9,18 +9,16 @@ extern root_node program_root;
 /* type classes */
 string complex_type::get_c_name() {
     switch (base_type) {
+        case byte_type:
+        case boolean:
+            return "int";
         case integer:
             return "long";
         case real:
-            return "double";
         case double_precision:
             return "long double";
-        case boolean:
-            return "int";
         case chars:
             return "char";
-        case byte_type:
-            return "int";
         case double_complex:
         case complex:
             return "_complex";
@@ -158,6 +156,9 @@ string process_add(string &l, string &r, complex_type *type) {
 
 string process_pow(string &l, string &r, complex_type *type) {
     switch (type->base_type) {
+        case real:
+        case double_precision:
+            return "powl(" + l + ", " + r + ")";
         case complex:
         case double_complex:
             return "cpow(" + l + ", " + r + ")";
@@ -167,6 +168,17 @@ string process_pow(string &l, string &r, complex_type *type) {
     return "pow(" + l + ", " + r + ")";
 }
 
+bool left_type_lower(complex_type* l, complex_type*r){
+    if(is_primitive_type(l) && is_primitive_type(r))
+        return l->base_type < r->base_type;
+    else if(is_primitive_type(l))
+        return true;
+    else if(is_primitive_type(r))
+        return false;
+    else{
+        return false;
+    }
+}
 
 string cast_to_type(string &val, complex_type *old, complex_type *ntype) {
     if ((ntype->base_type == old->base_type && ntype->multiplier == old->multiplier)
@@ -210,15 +222,18 @@ string eval_tree::recursive_eval(scope_chain *scope) {
         return val->eval(scope);
     }
 
-    for (eval_tree *_node: items)
+    for (eval_tree *_node: items) {
+        _node->recursive_eval(scope);
         expr->base_type = max(expr->base_type, _node->expr->base_type);
+    }
 
     vector<string> expressions;
     for (eval_tree *_node: items) {
         string exp = _node->recursive_eval(scope);
-        if (_node->type == e_name && _node->expr->base_type < chars && (_node->expr->multiplier == 1))
+        if (_node->type == e_name && is_primitive_type(_node->expr))
             exp = "*" + exp; // for primitive types
-        if (expr > _node->expr) cast_to_type(exp, _node->expr, expr);
+        if (left_type_lower(_node->expr, expr))
+            exp = cast_to_type(exp, _node->expr, expr);
         expressions.push_back(exp);
     }
 
@@ -229,6 +244,8 @@ string eval_tree::recursive_eval(scope_chain *scope) {
             return process_add(expressions[0], expressions[1], expr);
         case e_uminus:
             return "-" + expressions[0];
+        case e_uplus:
+            return "+" + expressions[0];
         case e_not:
             return "~" + expressions[0];
         case e_equ:
@@ -394,7 +411,16 @@ void list_node::build_string() {
 }
 
 void call_node::build_string() {
-    add(name + "(" + this->args->eval(this->chain) + ")");
+    add(name + "(");
+    for(auto* _node: this->args->childs){
+        if(auto* fn_call = dynamic_cast<eval_tree*>(_node)){
+            add(fn_call->wrap_expression(chain));
+            if (_node != args->childs.back()){
+                add(", ");
+            }
+        }
+    }
+    add(")");
 }
 
 void constant_node::build_string() {
@@ -496,7 +522,7 @@ void read_node::build_string() {
             arglist.append(expr->wrap_expression(chain));
 
             if (exp != ioargs->childs.back()) cformat.append(" "), arglist.append(", ");
-            else cformat.append("\\n");
+//            else cformat.append("\\n");
         }
     }
     add("fscanf(");
