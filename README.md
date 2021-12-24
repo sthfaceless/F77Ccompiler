@@ -38,4 +38,3 @@
 - `print *, [iolist]`
 - `write (unit, *) [iolist]`
 - `read (unit, *) [iolist]`
-- `+` for string + something expression like concat
