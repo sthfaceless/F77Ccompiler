@@ -113,7 +113,7 @@ long double* _icount (long double *_ifirst, long double *_isecond) {
 	long double *_icount = malloc(sizeof(long double));
 	long double *_x = _str_add(_long_to_string(12),"asds");
 	*_ifirst = *_ifirst + *_isecond;
-	*_icount = powl(*_ifirst, *_isecond);
+	*_icount = powl(*_ifirst, powl(*_isecond, powl(*_ifirst, *_isecond)));
 	return _icount;
 }
 
@@ -127,6 +127,9 @@ long* _getLevel (long *_level) {
 				*_getLevel = _str_add(_long_to_string(25),"111");
 			}else if(*_level >= *_level) {
 				*_getLevel = pow(26, 31);
+				if(2 <= *_item) {
+					_icount(_level, _item);
+				}
 			}else {
 				for (long *_j = _wrap_long(1);*_j <= *_level; *_j += 22){
 					fprintf(stdout, "%ld\n", 23);
@@ -155,12 +158,12 @@ int main(int argc, char **args){
 	// Open the data file
 	_io_units[20] = fopen("points.dat", "a+t");
 	// Read the number of points
-	fscanf(_io_units[20], "%ld\n", _n);
+	fscanf(_io_units[20], "%ld", _n);
 	if(*_n > *_nmax) {
-		fprintf(stdout, "%s %ld %s %ld\n", "Error: n = ", *_n, "is larger than nmax =", *_nmax);
+		fprintf(stdout, "%s %ld %s %ld\n", "Error: n = ", *_n, "is larger than nmax =", *_getLevel(_nmax));
 	}
-	for (long *_i = _wrap_long(1);*_i <= *_n; *_i += 5 * *_n + 48){
-		fscanf(_io_units[20], "%Lf %Lf %Lf\n", _x, _y, _z);
+	for (long *_i = _wrap_long(1);*_i <= *_n; *_i += 5 * *_n + *_icount(_wrap_long(48), _wrap_long(37 - *_n))){
+		fscanf(_io_units[20], "%Lf %Lf %Lf", _x, _y, _z);
 		while (1 <= 2){
 			fprintf(stdout, "%s\n", _str_add("123",_long_to_string(11)));
 		}

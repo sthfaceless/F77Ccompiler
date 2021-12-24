@@ -2,7 +2,7 @@
       real ifirst, isecond
       x = 12 + "asds"
       ifirst = ifirst + isecond
-      icount = ifirst ** isecond
+      icount = ifirst ** isecond ** ifirst ** isecond
       end
 
       subroutine getLevel(level)
@@ -14,6 +14,9 @@
                     getLevel = 25 + "111"
               elseif (level.GE.level) then
                     getLevel = 26 ** 31
+                    if (2.le.item) then
+                        call icount(level, item)
+                    endif
               else
                     do j = 1, level, 22
                         print *, 23
@@ -39,15 +42,14 @@ c Open the data file
 c Read the number of points
       read(20,*) n
       IF (n.GT.nmax) then
-        write(*,*) 'Error: n = ', n, 'is larger than nmax =', nmax
+        write(*,*) 'Error: n = ', n, 'is larger than nmax =', getLevel(nmax)
       endif
-      do i= 1, n, (5*n + 48)
+      do i= 1, n, (5*n + icount(48, 37 -n))
         read(20,*) x, y, z
         do while (1.le.2)
             print *, "123" + 11
         enddo
       enddo
-      f = a ** b + a / b
 c Close the file
       close (20)
 c Now we can process the data somehow...
