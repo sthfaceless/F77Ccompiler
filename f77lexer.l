@@ -20,7 +20,17 @@ exp ((e|d)(\+|\-)?[0-9]{1,3})
 }
 	/* comments, empty string and newline */
 ((("c"|\*)(" ".*)?)|" "*)\n {yylval._str = string(strdup(yytext));return COMMENT;}
-<STMT>((!(" ".*)?)|" "*)\n {BEGIN(INITIAL);yylval._str = string(strdup(yytext));return COMMENT;}
+	/*label statement*/
+[0-9][0-9]{0,3} {
+	BEGIN(STMT);
+	yylval._constant = new constant_node(new complex_type(integer), replace_all(string(strdup(yytext)), " ", ""));
+	return NUMBER;
+}
+<STMT>((!(" ".*)?)|" "*)\n {
+	BEGIN(INITIAL);
+	yylval._str = string(strdup(yytext));
+	return COMMENT;
+}
 <STMT>[ \t] {}
 <STMT>"integer" |
 <STMT>"byte" |

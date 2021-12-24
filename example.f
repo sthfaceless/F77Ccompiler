@@ -35,8 +35,15 @@ c
       Program name
       integer nmax, n
       real x, y, z
-      complex r
+      complex r = (10, 131), w = (1e3, 30d6), a
+      a = (r * w + (x, y) - (34, 31)) * (31, 31)
       nmax = 1000
+
+      read *, y
+      read (*) x, y
+      read *, x, y
+      read (*, *) x, y
+
 c Open the data file
       open (20, file='points.dat')
 c Read the number of points
@@ -50,6 +57,8 @@ c Read the number of points
             print *, "123" + 11
         enddo
       enddo
+9000  print *, "info"
+      goto 9000
 c Close the file
       close (20)
 c Now we can process the data somehow...

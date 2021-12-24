@@ -124,6 +124,10 @@ int main(int argc, char **args){
 	fprintf(stdout, "%s\n", "This program calculates a ** b + c, type a, b, c:");
 	fscanf(stdin, "%ld %ld %ld", _a, _b, _c);
 	fprintf(stdout, "%ld\n", pow(*_a, *_b) + *_c);
+	fscanf(stdin, "%ld", _y);
+	fscanf(stdin, "%ld %ld", _x, _y);
+	fscanf(stdin, "%ld %ld", _x, _y);
+	fscanf(stdin, "%ld %ld", _x, _y);
 	if(*_a >= 1) {
 		fprintf(stdout, "%s %ld %s\n", "\"a\" greater than 1, it's", *_a, "you are crazy");
 	}else if(*_b <= 1) {

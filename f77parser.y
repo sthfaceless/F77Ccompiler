@@ -41,7 +41,8 @@ void yyerror(char *s){
 %type <_items> stmts program_head stmt var_def fn_def nonexec_stmt
 %type <_complex_type> type
 %type <_list> exp_list elseif_stmt
-%type <_eval_tree> aexp format
+%type <_eval_tree> aexp
+%type <_str> symname
 
 %right EQUAL
 
@@ -94,21 +95,21 @@ stmt: exec_stmt COMMENT {$$ = {$1, create_comment($2)};}
 exec_stmt: assign_stmt
 | control_stmt
 | io_stmt
-assign_stmt: SYMNAME EQUAL aexp {$$ = new assign_node($1, $3);}
-;
+| NUMBER exec_stmt {$$ = new label_node($1, {$2});}
 control_stmt: if_stmt
 | do_stmt
 | fn_call
-| GOTO {$$ = sexpr("goto");}
-| CONTINUE {$$ = sexpr("continue");}
-| RETURN {$$ = sexpr("return");}
+| GOTO aexp {$$ = new goto_node($2);}
+| CONTINUE {$$ = sexpr("");}
+| RETURN {$$ = sexpr("formreturn");}
 | BREAK {$$ = sexpr("break");}
 | STOP {$$ = sexpr("exit(0)");}
-| PAUSE NUMBER {$$ = sexpr("sleep("+$2->val+")");}
+| PAUSE aexp {$$ = new pause_node($2);}
 ;
 if_stmt: IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts ENDIF {$$ = new list_node(dynamic_cast<node*>(new if_block("if", $3, $6)));}
 | IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts ELSE stmts ENDIF {
-$$ = new list_node({dynamic_cast<node*>(new if_block("if", $3, $6)), dynamic_cast<node*>(new if_block("else", nullptr, $8))});}
+	$$ = new list_node({dynamic_cast<node*>(new if_block("if", $3, $6)), dynamic_cast<node*>(new if_block("else", nullptr, $8))});
+}
 | IF LEFT_PARENT aexp RIGHT_PARENT THEN stmts elseif_stmt ELSE stmts ENDIF
 {	
 	list_node* list = new list_node(dynamic_cast<node*>(new if_block("if", $3, $6)));
@@ -126,8 +127,8 @@ $$ = new list_node({dynamic_cast<node*>(new if_block("if", $3, $6)), dynamic_cas
 elseif_stmt: ELSEIF LEFT_PARENT aexp RIGHT_PARENT THEN stmts {$$ = new list_node(dynamic_cast<node*>(new if_block("else if", $3, $6)));}
 | elseif_stmt ELSEIF LEFT_PARENT aexp RIGHT_PARENT THEN stmts {$1->add_item(dynamic_cast<node*>(new if_block("else if", $4, $7))); $$ = $1;}
 ;
-do_stmt: DO SYMNAME EQUAL aexp COMMA aexp stmts ENDDO {$$ = new doloop_node(new assign_node($2, $4), $6, $7);}
-| DO SYMNAME EQUAL aexp COMMA aexp COMMA aexp stmts ENDDO {$$ = new doloop_node(new assign_node($2, $4), $6, $8, $9);}
+do_stmt: DO symname EQUAL aexp COMMA aexp stmts ENDDO {$$ = new doloop_node(new assign_node($2, $4), $6, $7);}
+| DO symname EQUAL aexp COMMA aexp COMMA aexp stmts ENDDO {$$ = new doloop_node(new assign_node($2, $4), $6, $8, $9);}
 | DO WHILE aexp stmts ENDDO {$$ = new dowhile_node($3, $4);}
 ;
 io_stmt: read_stmt
@@ -136,18 +137,27 @@ io_stmt: read_stmt
 | OPEN LEFT_PARENT aexp COMMA AFILE EQUAL aexp RIGHT_PARENT {$$ = new open_node($3, $7);}
 | CLOSE LEFT_PARENT aexp RIGHT_PARENT {$$ = new close_node($3);}
 ;
-read_stmt: READ format {$$ = new read_node(nullptr, $2, new list_node());}
-| READ LEFT_PARENT format COMMA format RIGHT_PARENT aexp {$$ = new read_node($3, $5, new list_node(dynamic_cast<node*>($7)));}
-| read_stmt COMMA aexp
-{
-	auto* _node = dynamic_cast<read_node*>($1);
-	_node->ioargs->add_item(dynamic_cast<node*>($3));
-	$$ = _node;
-}
+read_stmt: READ MUL COMMA exp_list {$$ = new read_node(nullptr, nullptr, $4);}
+| READ LEFT_PARENT MUL RIGHT_PARENT exp_list {$$ = new read_node(nullptr, nullptr, $5);}
+| READ LEFT_PARENT aexp RIGHT_PARENT exp_list {$$ = new read_node($3, nullptr, $5);}
+| READ LEFT_PARENT aexp COMMA aexp RIGHT_PARENT exp_list {$$ = new read_node($3, $5, $7);}
+| READ LEFT_PARENT MUL COMMA aexp RIGHT_PARENT exp_list {$$ = new read_node(nullptr, $5, $7);}
+| READ LEFT_PARENT aexp COMMA MUL RIGHT_PARENT exp_list {$$ = new read_node($3, nullptr, $7);}
+| READ LEFT_PARENT MUL COMMA MUL RIGHT_PARENT exp_list {$$ = new read_node(nullptr, nullptr, $7);}
 ;
-write_stmt: WRITE LEFT_PARENT format COMMA format RIGHT_PARENT exp_list {$$ = new write_node($3, $5, $7);}
+write_stmt: WRITE LEFT_PARENT MUL COMMA MUL RIGHT_PARENT {$$ = new write_node(nullptr, nullptr, new list_node());}
+| WRITE LEFT_PARENT aexp COMMA MUL RIGHT_PARENT {$$ = new write_node($3, nullptr, new list_node());}
+| WRITE LEFT_PARENT MUL COMMA aexp RIGHT_PARENT {$$ = new write_node(nullptr, $5, new list_node());}
+| WRITE LEFT_PARENT aexp COMMA aexp RIGHT_PARENT {$$ = new write_node($3, $5, new list_node());}
+| WRITE LEFT_PARENT aexp RIGHT_PARENT {$$ = new write_node($3, nullptr, new list_node());}
+| WRITE LEFT_PARENT MUL COMMA MUL RIGHT_PARENT exp_list {$$ = new write_node(nullptr, nullptr, $7);}
+| WRITE LEFT_PARENT aexp COMMA MUL RIGHT_PARENT exp_list {$$ = new write_node($3, nullptr, $7);}
+| WRITE LEFT_PARENT MUL COMMA aexp RIGHT_PARENT exp_list {$$ = new write_node(nullptr, $5, $7);}
+| WRITE LEFT_PARENT aexp COMMA aexp RIGHT_PARENT exp_list {$$ = new write_node($3, $5, $7);}
+| WRITE LEFT_PARENT aexp RIGHT_PARENT exp_list {$$ = new write_node($3, nullptr, $5);}
 ;
-print_stmt: PRINT format {$$ = new write_node(nullptr, $2, new list_node());}
+print_stmt: PRINT MUL {$$ = new write_node(nullptr, nullptr, new list_node());}
+| PRINT aexp {$$ = new write_node(nullptr, $2, new list_node());}
 | print_stmt COMMA aexp
 {
 	auto* _node = dynamic_cast<write_node*>($1);
@@ -155,32 +165,35 @@ print_stmt: PRINT format {$$ = new write_node(nullptr, $2, new list_node());}
 	$$ = _node;
 }
 ;
-format: MUL {$$ = nullptr;}
-| aexp
-;
 nonexec_stmt: fn_def
 | var_def
 ;
 /* definitions */
-var_def: type SYMNAME {$$ = {new var_node($1, $2)};}
+var_def: type symname {$$ = {new var_node($1, $2)};}
+| type assign_stmt {$$ = {new var_node($1, dynamic_cast<assign_node*>($2))};}
 //| type SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
-| var_def COMMA SYMNAME {$1.insert($1.end(), new var_node(dynamic_cast<var_node*>(*$1.begin())->type,$3)); $$ = $1;}
+| var_def COMMA symname {$1.insert($1.end(), new var_node(dynamic_cast<var_node*>(*$1.begin())->type,$3)); $$ = $1;}
+| var_def COMMA assign_stmt {
+	$1.insert($1.end(), new var_node(dynamic_cast<var_node*>(*$1.begin())->type, dynamic_cast<assign_node*>($3))); $$ = $1;
+}
 //| var_def COMMA SYMNAME LEFT_PARENT exp_list RIGHT_PARENT
 ;
-fn_def: SYMNAME LEFT_PARENT RIGHT_PARENT EQUAL aexp {$$ = {new function_node($1, new list_node(), {new assign_node($1, $5)})};}
-| SYMNAME LEFT_PARENT exp_list RIGHT_PARENT EQUAL aexp {$$ = {new function_node($1, $3, {new assign_node($1, $6)})};}
-| type FUNCTION SYMNAME LEFT_PARENT RIGHT_PARENT stmts END {$$ = {new function_node($1, $3, new list_node(), $6)};}
-| FUNCTION SYMNAME LEFT_PARENT RIGHT_PARENT stmts END {$$ = {new function_node($2, new list_node(), $5)};}
-| type FUNCTION SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END {$$ = {new function_node($1, $3, $5, $7)};}
-| FUNCTION SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END {$$ = {new function_node($2, $4, $6)};}
-| SUBROUTINE SYMNAME stmts END {$$ = {new function_node(new complex_type(integer), $2, new list_node(), $3)};}
-| SUBROUTINE SYMNAME LEFT_PARENT RIGHT_PARENT stmts END {$$ = {new function_node(new complex_type(integer), $2, new list_node(), $5)};}
-| SUBROUTINE SYMNAME LEFT_PARENT exp_list RIGHT_PARENT stmts END {$$ = {new function_node(new complex_type(integer), $2, $4, $6)};}
+assign_stmt: symname EQUAL aexp {$$ = new assign_node($1, $3);}
 ;
-fn_call: SYMNAME LEFT_PARENT RIGHT_PARENT {$$ = new call_node($1, new list_node());}
-| SYMNAME LEFT_PARENT exp_list RIGHT_PARENT {$$ = new call_node($1, $3);}
-| CALL SYMNAME LEFT_PARENT RIGHT_PARENT {$$ = new call_node($2, new list_node());}
-| CALL SYMNAME LEFT_PARENT exp_list RIGHT_PARENT {$$ = new call_node($2, $4);}
+fn_def: symname LEFT_PARENT RIGHT_PARENT EQUAL aexp {$$ = {new function_node($1, new list_node(), {new assign_node($1, $5)})};}
+| symname LEFT_PARENT exp_list RIGHT_PARENT EQUAL aexp {$$ = {new function_node($1, $3, {new assign_node($1, $6)})};}
+| type FUNCTION symname LEFT_PARENT RIGHT_PARENT stmts END {$$ = {new function_node($1, $3, new list_node(), $6)};}
+| FUNCTION symname LEFT_PARENT RIGHT_PARENT stmts END {$$ = {new function_node($2, new list_node(), $5)};}
+| type FUNCTION symname LEFT_PARENT exp_list RIGHT_PARENT stmts END {$$ = {new function_node($1, $3, $5, $7)};}
+| FUNCTION symname LEFT_PARENT exp_list RIGHT_PARENT stmts END {$$ = {new function_node($2, $4, $6)};}
+| SUBROUTINE symname stmts END {$$ = {new function_node(new complex_type(integer), $2, new list_node(), $3)};}
+| SUBROUTINE symname LEFT_PARENT RIGHT_PARENT stmts END {$$ = {new function_node(new complex_type(integer), $2, new list_node(), $5)};}
+| SUBROUTINE symname LEFT_PARENT exp_list RIGHT_PARENT stmts END {$$ = {new function_node(new complex_type(integer), $2, $4, $6)};}
+;
+fn_call: symname LEFT_PARENT RIGHT_PARENT {$$ = new call_node($1, new list_node());}
+| symname LEFT_PARENT exp_list RIGHT_PARENT {$$ = new call_node($1, $3);}
+| CALL symname LEFT_PARENT RIGHT_PARENT {$$ = new call_node($2, new list_node());}
+| CALL symname LEFT_PARENT exp_list RIGHT_PARENT {$$ = new call_node($2, $4);}
 ;
 exp_list: aexp {$$ = new list_node(dynamic_cast<node*>($1), ", ");}
 | exp_list COMMA aexp {$1->add_item(dynamic_cast<node*>($3));$$ = $1;}
@@ -216,8 +229,11 @@ aexp: fn_call {$$ = new eval_tree(e_name, $1);}
  	program_root.add_header(def_str);
  	$$ = new eval_tree(e_constant, $1);
  }
-| SYMNAME {$$ = new eval_tree(e_name, new name_node($1));}
+| symname {$$ = new eval_tree(e_name, new name_node($1));}
 | LEFT_PARENT aexp RIGHT_PARENT {$$ = $2;}
+| LEFT_PARENT aexp COMMA aexp RIGHT_PARENT {
+	$$ = new eval_tree(e_complex, sexpr(","), {$2, $4});
+}
 | aexp POW aexp
 {
 	program_root.add_header(def_pow);
@@ -290,6 +306,8 @@ aexp: fn_call {$$ = new eval_tree(e_name, $1);}
 	program_root.add_header(def_not);
 	$$ = new eval_tree(e_not, sexpr("~"), {$2});
 }
+;
+symname: SYMNAME
 ;
 %%
 int main(int argc, char **args){

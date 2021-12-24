@@ -72,7 +72,7 @@ string &process_comment(string &comm) {
     if (comm.empty()) {
         return comm;
     }
-    if (comm[0] == 'c' || comm[0] == '!') {
+    if (comm[0] == 'c' || comm[0] == '!' || comm[0] == '*') {
         comm[0] = '/';
         comm.insert(comm.begin(), '/');
     }

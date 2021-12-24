@@ -7,7 +7,6 @@ c Begin commentary
 
         program abc
         integer a, b, c
-
         print *, "This program calculates a ** b + c, type a, b, c:"
         read(*, *) a, b, c
         print *, a ** b + c

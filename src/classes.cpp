@@ -168,14 +168,14 @@ string process_pow(string &l, string &r, complex_type *type) {
     return "pow(" + l + ", " + r + ")";
 }
 
-bool left_type_lower(complex_type* l, complex_type*r){
-    if(is_primitive_type(l) && is_primitive_type(r))
+bool left_type_lower(complex_type *l, complex_type *r) {
+    if (is_primitive_type(l) && is_primitive_type(r))
         return l->base_type < r->base_type;
-    else if(is_primitive_type(l))
+    else if (is_primitive_type(l))
         return true;
-    else if(is_primitive_type(r))
+    else if (is_primitive_type(r))
         return false;
-    else{
+    else {
         return false;
     }
 }
@@ -248,6 +248,12 @@ string eval_tree::recursive_eval(scope_chain *scope) {
             return "+" + expressions[0];
         case e_not:
             return "~" + expressions[0];
+        case e_complex: {
+            complex_type *ntype = new complex_type(complex);
+            if (left_type_lower(expr, ntype))
+                expr = ntype;
+            return "(" + expressions[0] + ", " + expressions[1] + ")";
+        }
         case e_equ:
         case e_leq:
         case e_les:
@@ -262,11 +268,11 @@ string eval_tree::recursive_eval(scope_chain *scope) {
 
 void eval_tree::build_string() {
     string value = recursive_eval(chain);
-    if(type == e_name) value = "*" + value;
+    if (type == e_name) value = "*" + value;
     add(value);
 }
 
-string eval_tree::wrap_expression(scope_chain* chain){
+string eval_tree::wrap_expression(scope_chain *chain) {
     stmt = recursive_eval(chain);
     data_type base_type = expr->base_type;
     if (base_type == chars || expr->multiplier > 1) {
@@ -340,7 +346,7 @@ void node::append_child(node *_child) {
     } else if (auto *_block = dynamic_cast<block_node *>(_child)) {
         begin_stmt();
         add(value);
-    }else if (auto *_list = dynamic_cast<list_node *>(_child)) {
+    } else if (auto *_list = dynamic_cast<list_node *>(_child)) {
         begin_stmt();
         add(value);
     } else {
@@ -389,7 +395,7 @@ void assign_node::build_string() {
         add(name);
         add(" = " + aexp->wrap_expression(chain));
     } else {
-        if(is_primitive_type(type)) add("*");
+        if (is_primitive_type(type)) add("*");
         add(name + " = " + aexp->eval(this->chain));
     }
 }
@@ -412,14 +418,30 @@ void list_node::build_string() {
 
 void call_node::build_string() {
     add(name + "(");
-    for(auto* _node: this->args->childs){
-        if(auto* fn_call = dynamic_cast<eval_tree*>(_node)){
+    for (auto *_node: this->args->childs) {
+        if (auto *fn_call = dynamic_cast<eval_tree *>(_node)) {
             add(fn_call->wrap_expression(chain));
-            if (_node != args->childs.back()){
+            if (_node != args->childs.back()) {
                 add(", ");
             }
         }
     }
+    add(")");
+}
+
+void label_node::build_string() {
+    add("_label" + id->eval(chain) + ": ");
+    append_childs();
+}
+
+void goto_node::build_string() {
+    add("goto _label");
+    add(aexp->eval(chain));
+}
+
+void pause_node::build_string() {
+    add("sleep(");
+    add(aexp->eval(chain));
     add(")");
 }
 
@@ -439,11 +461,17 @@ void def_node::ask(node *_node) {
 
 void var_node::build_string() {
     string cname = type->get_c_name();
-    add(cname + " *" + name + " = malloc(sizeof(" + cname + ")");
-    if (type->multiplier != 1) {
-        add("*" + to_string(type->multiplier));
+    add(cname + " *");
+    if (assign == nullptr) {
+        add(name + " = malloc(sizeof(" + cname + ")");
+        if (type->multiplier != 1) {
+            add("*" + to_string(type->multiplier));
+        }
+        add(")");
+    } else {
+        add(assign->name + " = ");
+        add(assign->aexp->wrap_expression(chain));
     }
-    add(")");
 }
 
 void open_node::build_string() {

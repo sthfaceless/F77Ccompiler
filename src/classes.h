@@ -147,6 +147,7 @@ private:
 
 typedef enum {
     e_constant,
+    e_complex,
     e_name,
     e_pow,
     e_mul,
@@ -258,6 +259,33 @@ public:
     list_node *args;
 
     call_node(string &name, list_node *args) : name_node(name), args(args) {}
+
+private:
+    void build_string() override;
+};
+
+class label_node: public node{
+public:
+    constant_node* id;
+    label_node(constant_node *id, vector<node*> label_stmts): id(id) {
+        add_childs(label_stmts);
+    }
+private:
+    void build_string() override;
+};
+
+class goto_node : public node{
+public:
+    eval_tree* aexp;
+    goto_node(eval_tree* aexp): aexp(aexp){}
+private:
+    void build_string() override;
+};
+
+class pause_node: public node{
+public:
+    eval_tree *aexp;
+    pause_node(eval_tree* aexp): aexp(aexp) {}
 
 private:
     void build_string() override;
@@ -407,9 +435,12 @@ public:
 
 class var_node : public def_node {
 public:
+    assign_node* assign = nullptr;
     var_node(string &name) : def_node(name) {}
 
     var_node(complex_type *type, string name) : def_node(type, name) {}
+
+    var_node(complex_type *type, assign_node* assign) : def_node(type, assign->name), assign(assign) {}
 
 private:
     void build_string() override;

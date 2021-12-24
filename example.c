@@ -153,7 +153,10 @@ int main(int argc, char **args){
 	long double *_x = malloc(sizeof(long double));
 	long double *_y = malloc(sizeof(long double));
 	long double *_z = malloc(sizeof(long double));
-	_complex *_r = malloc(sizeof(_complex));
+	_complex *_r = _wrap_complex((10, 131));
+	_complex *_w = _wrap_complex((1e3, 30e6));
+	_complex *_a = malloc(sizeof(_complex));
+	*_a = *_r * *_w + (*_x, *_y) - (34, 31) * (31, 31);
 	*_nmax = 1000;
 	// Open the data file
 	_io_units[20] = fopen("points.dat", "a+t");
@@ -168,6 +171,9 @@ int main(int argc, char **args){
 			fprintf(stdout, "%s\n", _str_add("123",_long_to_string(11)));
 		}
 	}
+	_label9000: 
+	fprintf(stdout, "%s\n", "info");;
+	goto _label9000;
 	// Close the file
 	fclose(_io_units[20]);
 	// Now we can process the data somehow...
