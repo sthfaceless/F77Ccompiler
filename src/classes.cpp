@@ -157,14 +157,17 @@ string process_add(string &l, string &r, complex_type *type) {
 string process_pow(string &l, string &r, complex_type *type) {
     switch (type->base_type) {
         case real:
-        case double_precision:
+        case double_precision: {
+            type->base_type = double_precision;
             return "powl(" + l + ", " + r + ")";
-        case complex:
-        case double_complex:
+        }case complex:
+        case double_complex: {
+            type->base_type = double_complex;
             return "cpow(" + l + ", " + r + ")";
-        default:
+        }default:
             break;
     }
+    type->base_type = real;
     return "pow(" + l + ", " + r + ")";
 }
 
@@ -302,7 +305,7 @@ void node::begin_line(int val) {
 
 void node::begin_line() {
     if (chain) {
-        for (int i = 0; i < chain->items.size(); ++i)
+        for (int i = 0; i < chain->items.size() - 1; ++i)
             add("\t");
     }
 }
@@ -363,6 +366,7 @@ void node::append_childs() {
 void node::add_childs(vector<node *> &_childs) {
     childs.insert(childs.end(), _childs.begin(), _childs.end());
 }
+
 
 string node::eval(scope_chain *chain) {
     this->chain = chain;
@@ -584,7 +588,7 @@ void if_block::build_string() {
     add(" {");
     append_childs();
     add("\n");
-    begin_line(-1);
+    begin_line(-2);
     add("}");
 }
 
@@ -595,7 +599,7 @@ void doloop_node::build_string() {
     add("*" + assign->name + " += " + step->eval(this->chain) + "){");
     append_childs();
     add("\n");
-    begin_line(-1);
+    begin_line(-2);
     add("}");
 }
 
@@ -605,7 +609,7 @@ void dowhile_node::build_string() {
     add("){");
     append_childs();
     add("\n");
-    begin_line(-1);
+    begin_line(-2);
     add("}");
 }
 
@@ -613,6 +617,12 @@ function_node::function_node(string &name, list_node *vars, vector<node *> stmts
         : name(new name_node(name)), vars(vars) {
     this->add_childs(stmts);
     this->type = program_root.determine_type(this->name->name);
+}
+
+void function_node::ask(node *_node) {
+    if (auto *block = dynamic_cast<block_node *>(_node)) {
+        block->add_scope_item(type, name->name);
+    }
 }
 
 void function_node::build_string() {
@@ -656,7 +666,7 @@ void function_node::build_string() {
 
     if (!last_return) add_stmt("return " + name->name);
     add("\n");
-    begin_line(-1);
+    begin_line(-2);
     add("}\n");
 }
 

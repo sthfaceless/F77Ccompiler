@@ -23,7 +23,7 @@ void yyerror(char *s){
 // %glr-parser
 
 /* declaring tokens */
-%token PROGRAM END EOL END_OF_FILE
+%token PROGRAM END EOL END_OF_FILE END_STMT
 %token FUNCTION SUBROUTINE RETURN
 %token CALL GOTO STOP PAUSE
 %token IF THEN ELSE ELSEIF ENDIF
@@ -65,12 +65,13 @@ program: program_head program_body program_end END_OF_FILE
 {
 	program_root.add_childs($1);
 	program_root.add_child($2);
-	translate_program();
+	translate_program($1);
 }
 | program_body program_end END_OF_FILE
 {
 	program_root.add_child($1);
-	translate_program();
+	vector<node*> v;
+	translate_program(v);
 }
 ;
 program_head: nonexec_stmt {$$ = {$1};}

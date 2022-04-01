@@ -13,4 +13,7 @@ then
   output_file="${PROJECT_DIR}/example.c"
 fi
 
-"${PROJECT_DIR}/cmake-build-debug/lexer"  < "${input_file}" > "${output_file}"
+rm -f "${output_file}"
+
+chmod 700 "${PROJECT_DIR}/lexer"
+"${PROJECT_DIR}/lexer"  < "${input_file}" > "${output_file}"

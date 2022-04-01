@@ -300,6 +300,10 @@ public:
     void add_scope_item(complex_type *type, string &name);
 
     string eval(scope_chain *chain) override;
+
+private:
+    void ask(node *_node) override {}
+    void build_string() override{}
 };
 
 class if_block : public block_node {
@@ -366,6 +370,7 @@ public:
 
 private:
     void build_string() override;
+    void ask(node *_node) override;
 };
 
 class open_node : public node {

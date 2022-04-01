@@ -1,12 +1,13 @@
 c Begin commentary
 
         real function hypo(x, y)
-        integer x, y
+        real x, y
         hypo = (x * x + y * y) ** (1.0/2.0)
         end
 
         program abc
-        integer a, b, c
+        integer a
+        real b, c
         print *, "This program calculates a ** b + c, type a, b, c:"
         read(*, *) a, b, c
         print *, a ** b + c

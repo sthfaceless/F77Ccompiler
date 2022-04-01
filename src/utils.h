@@ -6,6 +6,7 @@
 #define F77CCOMPILER_UTILS_H
 
 #include <cstring>
+#include <string>
 
 using namespace std;
 

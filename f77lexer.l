@@ -4,7 +4,7 @@
 using namespace std;
 %}
 
-ss (" "{6}|\t)
+ss (" "{6})
 exp ((e|d)(\+|\-)?[0-9]{1,3})
 
 %option caseless yylineno noyywrap stack
@@ -21,7 +21,7 @@ exp ((e|d)(\+|\-)?[0-9]{1,3})
 	/* comments, empty string and newline */
 ((("c"|\*)(" ".*)?)|" "*)\n {yylval._str = string(strdup(yytext));return COMMENT;}
 	/*label statement*/
-[0-9][0-9]{0,3} {
+[0-9][0-9]{0,4} {
 	BEGIN(STMT);
 	yylval._constant = new constant_node(new complex_type(integer), replace_all(string(strdup(yytext)), " ", ""));
 	return NUMBER;

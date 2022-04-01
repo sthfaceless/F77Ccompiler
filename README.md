@@ -14,7 +14,7 @@
 - `bash scripts/build.sh` or 3 following commands
   - `bison -o "${PROJECT_DIR}/src/f77parser.c" "${PROJECT_DIR}/f77parser.y" -d `
   - `flex -o "${PROJECT_DIR}/src/f77lexer.c" "${PROJECT_DIR}/f77lexer.l"`
-  - `cmake --build "${PROJECT_DIR}/cmake-build-debug" --target lexer`
+  - `g++ -o lexer src/classes.cpp src/classes.h src/defs.h src/f77parser.h src/f77lexer.c src/f77parser.c src/utils.h src/utils.cpp src/debug.h src/global.h -lm`
 - `bash scripts/translate.sh <input_file> <output_file>` by default it translates example.f to example.c
 - or you could directly ran executable `"${PROJECT_DIR}/cmake-build-debug/lexer"` using `stdin` for Fortran77 and `stdout` for C
 - running executable file with `-d` flag outputs fortran code tokenization to `stderr`
@@ -29,11 +29,11 @@
   - `do var=<l>, <r> [, <step>] ... enddo` 
   - `do while(expression) ... enddo`
 - function definition 
-  - `type function ([varlist]) ... end`
+  - `[<type>] function ([varlist]) ... end`
   - `subroutine ([varlist]) ... end`
 - `stop`
 - `pause <number>`
-- `open(<unit>, file=filename)`
+- `open(<unit>, file=<filename>)`
 - `close(<unit>)`
 - `print *, [iolist]`
 - write statements
